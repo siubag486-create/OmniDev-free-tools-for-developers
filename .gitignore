@@ -39,3 +39,14 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# playwright mcp artifacts
+/.playwright-mcp/
+
+# npm cache folders accidentally placed in project
+PSWK*
+
+# images
+*.png
+*.jpg
+*.jpeg
