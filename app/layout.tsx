@@ -20,9 +20,15 @@ const spaceMono = Space_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "CodeBridge — 비개발자를 위한 코딩 입문",
+  title: "CodeBridge — Free tools for Developers",
   description:
-    "코드를 몰라도 괜찮습니다. CodeBridge는 비개발자가 AI 도구로 실제 서비스를 만들 수 있도록 돕는 인터랙티브 학습 플랫폼입니다.",
+    "Free tools for Developers. CodeBridge provides interactive developer tools to help you build, format, and debug faster.",
+  openGraph: {
+    title: "CodeBridge — Free tools for Developers",
+    description:
+      "Free tools for Developers. CodeBridge provides interactive developer tools to help you build, format, and debug faster.",
+    type: "website",
+  },
 };
 
 export default function RootLayout({
