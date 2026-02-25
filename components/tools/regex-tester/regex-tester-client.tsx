@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useMemo, useState } from "react";
 import { Copy, Check, Trash2, AlertCircle } from "lucide-react";
 
 type Status = "idle" | "ready" | "match" | "nomatch" | "error";
@@ -95,23 +95,14 @@ export default function RegexTesterClient() {
     s: false,
   });
   const [testString, setTestString] = useState("");
-  const [status, setStatus] = useState<Status>("idle");
-  const [matches, setMatches] = useState<RegExpMatchArray[]>([]);
-  const [errorMessage, setErrorMessage] = useState("");
   const [copied, setCopied] = useState(false);
 
-  useEffect(() => {
+  const { status, matches, errorMessage } = useMemo(() => {
     if (!pattern) {
-      setStatus("idle");
-      setMatches([]);
-      setErrorMessage("");
-      return;
+      return { status: "idle" as Status, matches: [] as RegExpMatchArray[], errorMessage: "" };
     }
     if (!testString) {
-      setStatus("ready");
-      setMatches([]);
-      setErrorMessage("");
-      return;
+      return { status: "ready" as Status, matches: [] as RegExpMatchArray[], errorMessage: "" };
     }
     try {
       // Always include 'g' so matchAll works; apply user flags on top
@@ -129,15 +120,17 @@ export default function RegexTesterClient() {
       // If user hasn't toggled g, only show the first match
       const displayMatches = flags.g ? allMatches : allMatches.slice(0, 1);
 
-      setMatches(displayMatches);
-      setStatus(displayMatches.length > 0 ? "match" : "nomatch");
-      setErrorMessage("");
+      return {
+        status: (displayMatches.length > 0 ? "match" : "nomatch") as Status,
+        matches: displayMatches,
+        errorMessage: "",
+      };
     } catch (e) {
-      setStatus("error");
-      setErrorMessage(
-        e instanceof Error ? e.message : "Invalid regular expression",
-      );
-      setMatches([]);
+      return {
+        status: "error" as Status,
+        matches: [] as RegExpMatchArray[],
+        errorMessage: e instanceof Error ? e.message : "Invalid regular expression",
+      };
     }
   }, [pattern, flags, testString]);
 
@@ -155,9 +148,6 @@ export default function RegexTesterClient() {
   function handleClear() {
     setPattern("");
     setTestString("");
-    setStatus("idle");
-    setMatches([]);
-    setErrorMessage("");
   }
 
   function toggleFlag(flag: keyof Flags) {

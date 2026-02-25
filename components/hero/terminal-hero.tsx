@@ -213,8 +213,7 @@ function useTypewriter(
   const [done, setDone] = useState(false);
 
   useEffect(() => {
-    let timeout: ReturnType<typeof setTimeout>;
-    timeout = setTimeout(() => {
+    const timeout = setTimeout(() => {
       let i = 0;
       const interval = setInterval(() => {
         setDisplayed(text.slice(0, i + 1));
@@ -533,7 +532,7 @@ export default function TerminalHero() {
                         letterSpacing: "0.08em",
                       }}
                     >
-                      <span style={{ color: "var(--code-comment)" }}>// </span>
+                      <span style={{ color: "var(--code-comment)" }}>{"// "}</span>
                       {subtitle.displayed}
                       {!subtitle.done && (
                         <span
