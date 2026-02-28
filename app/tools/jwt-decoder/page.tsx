@@ -1,24 +1,25 @@
 import type { Metadata } from "next";
-import Base64Client from "@/components/tools/base64/base64-client";
+import JwtDecoderClient from "@/components/tools/jwt-decoder/jwt-decoder-client";
 import ToolNavSidebar from "@/components/layout/tool-nav-sidebar";
 
 export const metadata: Metadata = {
-  title: "Base64 Encoder/Decoder — Free Online Tool | CodeBridge",
+  title: "JWT Inspector — Free Online JWT Decoder & Verifier | CodeBridge",
   description:
-    "Encode and decode Base64 strings, URL-safe Base64, and images instantly in your browser. No server required. Supports UTF-8 text, drag & drop image upload, and data URL output.",
+    "Decode and inspect JWT tokens instantly. View Header, Payload, and Signature with live expiry countdown. Verify HMAC signatures with your secret key. Runs entirely in your browser — zero server calls.",
   keywords: [
-    "base64 encoder",
-    "base64 decoder",
-    "base64 online",
-    "url safe base64",
-    "image to base64",
-    "data url generator",
+    "jwt decoder",
+    "jwt inspector",
+    "jwt debugger",
+    "json web token decoder",
+    "jwt verify",
+    "jwt expiry checker",
+    "hs256 verify",
   ],
 };
 
 const monoFont = "'RoundedFixedsys', var(--font-geist-mono), monospace";
 
-export default function Base64Page() {
+export default function JwtDecoderPage() {
   return (
     <main
       style={{
@@ -29,7 +30,6 @@ export default function Base64Page() {
         overflow: "hidden",
       }}
     >
-      {/* Grid lines background */}
       <div
         className="grid-lines-bg"
         style={{
@@ -67,7 +67,6 @@ export default function Base64Page() {
           >
             {/* Left: title block */}
             <div>
-              {/* Breadcrumb */}
               <p
                 style={{
                   fontFamily: monoFont,
@@ -79,7 +78,7 @@ export default function Base64Page() {
               >
                 <span style={{ color: "var(--terminal-green)" }}>~</span>
                 <span style={{ opacity: 0.5 }}>/tools/</span>
-                <span style={{ color: "var(--electric-blue)" }}>base64</span>
+                <span style={{ color: "var(--electric-blue)" }}>jwt-decoder</span>
               </p>
 
               <h1
@@ -93,13 +92,9 @@ export default function Base64Page() {
                   marginBottom: "8px",
                 }}
               >
-                Base64{" "}
+                JWT{" "}
                 <span style={{ color: "var(--code-comment)", fontWeight: 400 }}>
-                  Encoder
-                </span>{" "}
-                /{" "}
-                <span style={{ color: "var(--code-comment)", fontWeight: 400 }}>
-                  Decoder
+                  Inspector
                 </span>
               </h1>
 
@@ -112,15 +107,15 @@ export default function Base64Page() {
                   maxWidth: "540px",
                 }}
               >
-                Encode and decode Base64{" "}
-                <span style={{ color: "var(--terminal-green)", opacity: 0.8 }}>
-                  instantly
+                Decode Header, Payload, and Signature.{" "}
+                <span style={{ color: "var(--terminal-green)", opacity: 0.85 }}>
+                  Live expiry countdown
                 </span>{" "}
-                — text, URL-safe, and images. Runs entirely in your browser.
+                and HMAC signature verification — all in your browser, zero server calls.
               </p>
             </div>
 
-            {/* Right: How to use tips box */}
+            {/* Right: How to use */}
             <div
               style={{
                 border: "1px solid rgba(88,166,255,0.18)",
@@ -146,7 +141,6 @@ export default function Base64Page() {
                 // How to use
               </div>
               <div style={{ display: "flex" }}>
-                {/* Text / URL Safe */}
                 <pre
                   style={{
                     margin: 0,
@@ -159,13 +153,12 @@ export default function Base64Page() {
                     borderRight: "1px solid rgba(88,166,255,0.1)",
                   }}
                 >
-                  <span style={{ color: "var(--terminal-green)", opacity: 0.7 }}>1.</span>{" Text / URL Safe tabs\n"}
-                  <span style={{ color: "var(--terminal-green)", opacity: 0.7 }}>2.</span>{" Type or paste text to encode\n"}
-                  <span style={{ color: "var(--terminal-green)", opacity: 0.7 }}>3.</span>{" Switch Encode / Decode mode\n"}
-                  <span style={{ color: "var(--terminal-green)", opacity: 0.7 }}>4.</span>{" Use Swap to flip input/output\n"}
-                  <span style={{ color: "rgba(88,166,255,0.5)", fontSize: "0.62rem" }}>{"* URL Safe replaces +/= with -_"}</span>
+                  <span style={{ color: "var(--terminal-green)", opacity: 0.7 }}>1.</span>{" Paste JWT token into the input\n"}
+                  <span style={{ color: "var(--terminal-green)", opacity: 0.7 }}>2.</span>{" Header, Payload, Signature decoded\n"}
+                  <span style={{ color: "var(--terminal-green)", opacity: 0.7 }}>3.</span>{" Check live expiry on exp claim\n"}
+                  <span style={{ color: "var(--terminal-green)", opacity: 0.7 }}>4.</span>{" Enter secret + Verify for HS256\n"}
+                  <span style={{ color: "rgba(88,166,255,0.5)", fontSize: "0.62rem" }}>{"* all processing done in browser"}</span>
                 </pre>
-                {/* Image */}
                 <pre
                   style={{
                     margin: 0,
@@ -177,23 +170,23 @@ export default function Base64Page() {
                     whiteSpace: "pre",
                   }}
                 >
-                  <span style={{ color: "rgba(88,166,255,0.7)", fontWeight: 700 }}>{"// Image Tab\n"}</span>
-                  <span style={{ color: "var(--terminal-green)", opacity: 0.7 }}>-</span>{" Drag & drop or click to upload\n"}
-                  <span style={{ color: "var(--terminal-green)", opacity: 0.7 }}>-</span>{" Copy as data URL, img tag, CSS\n"}
-                  <span style={{ color: "var(--terminal-green)", opacity: 0.7 }}>-</span>{" PNG, JPG, GIF, SVG, WebP supported\n"}
-                  <span style={{ color: "var(--terminal-green)", opacity: 0.7 }}>-</span>{" Preview shown alongside Base64\n"}
-                  <span style={{ color: "rgba(88,166,255,0.5)", fontSize: "0.62rem" }}>{"* Not encryption — anyone can decode"}</span>
+                  <span style={{ color: "rgba(88,166,255,0.7)", fontWeight: 700 }}>{"// Standard Claims\n"}</span>
+                  <span style={{ color: "var(--terminal-green)", opacity: 0.7 }}>iss</span>{" Issuer    "}<span style={{ color: "var(--terminal-green)", opacity: 0.7 }}>sub</span>{" Subject\n"}
+                  <span style={{ color: "var(--terminal-green)", opacity: 0.7 }}>aud</span>{" Audience  "}<span style={{ color: "var(--terminal-green)", opacity: 0.7 }}>jti</span>{" JWT ID\n"}
+                  <span style={{ color: "var(--terminal-green)", opacity: 0.7 }}>exp</span>{" Expiry    "}<span style={{ color: "var(--terminal-green)", opacity: 0.7 }}>iat</span>{" Issued At\n"}
+                  <span style={{ color: "var(--terminal-green)", opacity: 0.7 }}>nbf</span>{" Not Before\n"}
+                  <span style={{ color: "rgba(88,166,255,0.5)", fontSize: "0.62rem" }}>{"* highlighted in payload section"}</span>
                 </pre>
               </div>
             </div>
           </div>
 
           {/* Tool */}
-          <Base64Client />
+          <JwtDecoderClient />
         </div>
 
         {/* Sidebar */}
-        <ToolNavSidebar currentTool="base64" />
+        <ToolNavSidebar currentTool="jwt-decoder" />
       </div>
     </main>
   );

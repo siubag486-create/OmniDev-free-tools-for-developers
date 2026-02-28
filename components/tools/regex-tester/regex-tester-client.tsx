@@ -595,7 +595,60 @@ export default function RegexTesterClient() {
             />
 
             {/* Highlighted text view */}
-            {testString ? (
+            {status === "nomatch" ? (
+              <div
+                style={{
+                  flex: 1,
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: "10px",
+                  padding: "40px 20px",
+                  position: "relative",
+                  zIndex: 2,
+                }}
+              >
+                <div
+                  style={{
+                    width: "36px",
+                    height: "36px",
+                    borderRadius: "50%",
+                    border: "2px solid rgba(255,123,114,0.4)",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    color: "var(--code-red)",
+                    fontSize: "1.1rem",
+                    fontFamily: monoFont,
+                    fontWeight: 700,
+                  }}
+                >
+                  ∅
+                </div>
+                <span
+                  style={{
+                    color: "var(--code-red)",
+                    fontFamily: monoFont,
+                    fontSize: "0.8rem",
+                    fontWeight: 600,
+                    letterSpacing: "0.06em",
+                  }}
+                >
+                  No match found
+                </span>
+                <span
+                  style={{
+                    color: "var(--code-comment)",
+                    fontFamily: monoFont,
+                    fontSize: "0.68rem",
+                    opacity: 0.5,
+                  }}
+                >
+                  0 matches in test string
+                </span>
+              </div>
+            ) : testString ? (
               <pre
                 style={{
                   padding: "14px 16px",

@@ -1,9 +1,9 @@
 "use client";
 
 import { useState, useRef, useCallback } from "react";
-import { Copy, Check, Trash2, ArrowRightLeft, Image, Key } from "lucide-react";
+import { Copy, Check, Trash2, ArrowRightLeft, Image } from "lucide-react";
 
-type TabId = "text" | "urlsafe" | "image" | "jwt";
+type TabId = "text" | "urlsafe" | "image";
 type Mode = "encode" | "decode";
 type Status = "idle" | "valid" | "error";
 
@@ -31,29 +31,6 @@ function decodeUrlSafe(input: string): string {
   const pad = padded.length % 4;
   const base64 = pad ? padded + "=".repeat(4 - pad) : padded;
   return decodeBase64(base64);
-}
-
-function decodeJwtPart(part: string): unknown {
-  const base64 = part.replace(/-/g, "+").replace(/_/g, "/");
-  const pad = base64.length % 4;
-  const padded = pad ? base64 + "=".repeat(4 - pad) : base64;
-  return JSON.parse(decodeBase64(padded));
-}
-
-function formatExpiry(exp: number): { label: string; expired: boolean } {
-  const now = Math.floor(Date.now() / 1000);
-  const diff = exp - now;
-  if (diff <= 0) {
-    const ago = Math.abs(diff);
-    if (ago < 60) return { label: `Expired ${ago}s ago`, expired: true };
-    if (ago < 3600) return { label: `Expired ${Math.floor(ago / 60)}m ago`, expired: true };
-    if (ago < 86400) return { label: `Expired ${Math.floor(ago / 3600)}h ago`, expired: true };
-    return { label: `Expired ${Math.floor(ago / 86400)}d ago`, expired: true };
-  }
-  if (diff < 60) return { label: `${diff}s remaining`, expired: false };
-  if (diff < 3600) return { label: `${Math.floor(diff / 60)}m remaining`, expired: false };
-  if (diff < 86400) return { label: `${Math.floor(diff / 3600)}h remaining`, expired: false };
-  return { label: `${Math.floor(diff / 86400)}d remaining`, expired: false };
 }
 
 // ── sub-components ────────────────────────────────────────────────────────────
@@ -701,296 +678,12 @@ function ImageTab() {
   );
 }
 
-// ── JWT tab ───────────────────────────────────────────────────────────────────
-
-function JwtTab() {
-  const [input, setInput] = useState("");
-
-  const parsed = (() => {
-    if (!input.trim()) return null;
-    const parts = input.trim().split(".");
-    if (parts.length !== 3) return { error: "Not a valid JWT — must have 3 parts separated by dots" };
-    try {
-      const header = decodeJwtPart(parts[0]);
-      const payload = decodeJwtPart(parts[1]) as Record<string, unknown>;
-      return { header, payload, signature: parts[2] };
-    } catch {
-      return { error: "Failed to decode — invalid Base64 or JSON in token" };
-    }
-  })();
-
-  const expiry = (() => {
-    if (!parsed || "error" in parsed) return null;
-    const exp = (parsed.payload as Record<string, unknown>).exp;
-    if (typeof exp !== "number") return null;
-    return formatExpiry(exp);
-  })();
-
-  const partColor = (label: string) => {
-    if (label === "Header") return "#58a6ff";
-    if (label === "Payload") return "var(--terminal-green)";
-    return "#ff7b72";
-  };
-
-  const renderPart = (label: string, data: unknown) => (
-    <div
-      key={label}
-      style={{
-        border: `1px solid ${label === "Header" ? "rgba(88,166,255,0.2)" : label === "Payload" ? "rgba(0,255,136,0.2)" : "rgba(255,123,114,0.2)"}`,
-        borderRadius: "8px",
-        overflow: "hidden",
-      }}
-    >
-      <div
-        style={{
-          padding: "6px 12px",
-          borderBottom: `1px solid ${label === "Header" ? "rgba(88,166,255,0.12)" : label === "Payload" ? "rgba(0,255,136,0.12)" : "rgba(255,123,114,0.12)"}`,
-          backgroundColor:
-            label === "Header"
-              ? "rgba(88,166,255,0.05)"
-              : label === "Payload"
-                ? "rgba(0,255,136,0.05)"
-                : "rgba(255,123,114,0.05)",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-        }}
-      >
-        <span
-          style={{
-            fontFamily: monoFont,
-            fontSize: "0.68rem",
-            color: partColor(label),
-            letterSpacing: "0.06em",
-            fontWeight: 700,
-          }}
-        >
-          {label}
-        </span>
-        {label === "Payload" && expiry && (
-          <span
-            style={{
-              fontFamily: monoFont,
-              fontSize: "0.65rem",
-              padding: "2px 8px",
-              borderRadius: "3px",
-              border: `1px solid ${expiry.expired ? "rgba(255,123,114,0.3)" : "rgba(0,255,136,0.3)"}`,
-              color: expiry.expired ? "#ff7b72" : "var(--terminal-green)",
-              background: expiry.expired
-                ? "rgba(255,123,114,0.06)"
-                : "rgba(0,255,136,0.06)",
-            }}
-          >
-            {expiry.label}
-          </span>
-        )}
-        <CopyButton text={JSON.stringify(data, null, 2)} />
-      </div>
-      <pre
-        style={{
-          margin: 0,
-          padding: "12px 14px",
-          fontFamily: monoFont,
-          fontSize: "0.76rem",
-          color: partColor(label),
-          background: "rgba(10,14,26,0.8)",
-          lineHeight: "1.7",
-          overflowX: "auto",
-        }}
-      >
-        {JSON.stringify(data, null, 2)}
-      </pre>
-    </div>
-  );
-
-  return (
-    <div style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
-      {/* Token input */}
-      <div
-        style={{
-          border: "1px solid rgba(88,166,255,0.15)",
-          borderRadius: "8px",
-          overflow: "hidden",
-        }}
-      >
-        <div
-          style={{
-            padding: "6px 12px",
-            borderBottom: "1px solid rgba(88,166,255,0.1)",
-            backgroundColor: "rgba(88,166,255,0.04)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-          }}
-        >
-          <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-            <Key size={12} style={{ color: "#58a6ff", opacity: 0.7 }} />
-            <span
-              style={{
-                fontFamily: monoFont,
-                fontSize: "0.65rem",
-                color: "var(--code-comment)",
-                letterSpacing: "0.08em",
-              }}
-            >
-              JWT TOKEN
-            </span>
-          </div>
-          {input && (
-            <button
-              onClick={() => setInput("")}
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "4px",
-                fontFamily: monoFont,
-                fontSize: "0.65rem",
-                padding: "3px 8px",
-                borderRadius: "4px",
-                cursor: "pointer",
-                border: "1px solid rgba(255,123,114,0.2)",
-                background: "rgba(255,123,114,0.04)",
-                color: "var(--code-comment)",
-              }}
-            >
-              <Trash2 size={10} />
-              Clear
-            </button>
-          )}
-        </div>
-        <textarea
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          placeholder="Paste a JWT token here... e.g. eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...."
-          spellCheck={false}
-          style={{
-            width: "100%",
-            minHeight: "80px",
-            padding: "12px",
-            background: "rgba(10,14,26,0.8)",
-            border: "none",
-            outline: "none",
-            resize: "vertical",
-            fontFamily: monoFont,
-            fontSize: "0.78rem",
-            color: "#e6edf3",
-            lineHeight: "1.6",
-            boxSizing: "border-box",
-          }}
-        />
-      </div>
-
-      {/* Parse error */}
-      {parsed && "error" in parsed && (
-        <div
-          style={{
-            fontFamily: monoFont,
-            fontSize: "0.78rem",
-            color: "#ff7b72",
-            padding: "10px 14px",
-            border: "1px solid rgba(255,123,114,0.2)",
-            borderRadius: "7px",
-            background: "rgba(255,123,114,0.04)",
-          }}
-        >
-          {parsed.error}
-        </div>
-      )}
-
-      {/* Decoded parts */}
-      {parsed && !("error" in parsed) && (
-        <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-          {renderPart("Header", parsed.header)}
-          {renderPart("Payload", parsed.payload)}
-          {/* Signature */}
-          <div
-            style={{
-              border: "1px solid rgba(255,123,114,0.2)",
-              borderRadius: "8px",
-              overflow: "hidden",
-            }}
-          >
-            <div
-              style={{
-                padding: "6px 12px",
-                borderBottom: "1px solid rgba(255,123,114,0.12)",
-                backgroundColor: "rgba(255,123,114,0.05)",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-              }}
-            >
-              <span
-                style={{
-                  fontFamily: monoFont,
-                  fontSize: "0.68rem",
-                  color: "#ff7b72",
-                  letterSpacing: "0.06em",
-                  fontWeight: 700,
-                }}
-              >
-                Signature
-              </span>
-              <CopyButton text={parsed.signature} />
-            </div>
-            <pre
-              style={{
-                margin: 0,
-                padding: "10px 14px",
-                fontFamily: monoFont,
-                fontSize: "0.74rem",
-                color: "#ff7b72",
-                background: "rgba(10,14,26,0.8)",
-                lineHeight: "1.6",
-                wordBreak: "break-all",
-                whiteSpace: "pre-wrap",
-              }}
-            >
-              {parsed.signature}
-            </pre>
-            <div
-              style={{
-                padding: "6px 14px",
-                borderTop: "1px solid rgba(255,123,114,0.1)",
-                fontFamily: monoFont,
-                fontSize: "0.63rem",
-                color: "var(--code-comment)",
-                opacity: 0.5,
-                background: "rgba(10,14,26,0.8)",
-              }}
-            >
-              Signature cannot be verified client-side without the secret key
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Empty state hint */}
-      {!parsed && (
-        <div
-          style={{
-            fontFamily: monoFont,
-            fontSize: "0.76rem",
-            color: "var(--code-comment)",
-            opacity: 0.4,
-            textAlign: "center",
-            padding: "24px 0",
-          }}
-        >
-          Paste a JWT token above to decode its parts
-        </div>
-      )}
-    </div>
-  );
-}
-
 // ── Main component ────────────────────────────────────────────────────────────
 
 const TABS: { id: TabId; label: string }[] = [
   { id: "text", label: "Text" },
   { id: "urlsafe", label: "URL Safe" },
   { id: "image", label: "Image" },
-  { id: "jwt", label: "JWT Decode" },
 ];
 
 export default function Base64Client() {
@@ -1072,7 +765,6 @@ export default function Base64Client() {
         {activeTab === "text" && <TextTab />}
         {activeTab === "urlsafe" && <TextTab urlSafe />}
         {activeTab === "image" && <ImageTab />}
-        {activeTab === "jwt" && <JwtTab />}
       </div>
     </div>
   );

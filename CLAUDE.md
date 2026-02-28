@@ -9,6 +9,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 -NEVER use emoji for design.
 -ALWAYS prioritize server component over client component
 -NEVER write or modify any code unless the user explicitly asks you to implement something. If the user asks a question, only answer it — do not write, edit, or create any code.
+-NEVER use MCP tools (Playwright, browser automation, etc.) to verify results without asking the user first. When a task is complete, tell the user "작업 완료, 직접 확인해주세요" and wait for their feedback. Do not self-verify unless the user explicitly says to.
 
 ## Commands
 
@@ -83,6 +84,7 @@ Always dark — no light mode toggle.
 - `/tools/regex-tester` — Regex Tester (완료)
 - `/tools/text-diff` — Text Diff Tool (완료)
 - `/tools/base64` — Base64 Encoder/Decoder (완료)
+- `/tools/jwt-decoder` — JWT Inspector (완료)
 - `/tools/uuid-generator` — UUID Generator (개발예정 1순위)
 - `/tools/hash-generator` — Hash Generator (개발예정 2순위)
 
@@ -91,8 +93,9 @@ Always dark — no light mode toggle.
 개발 완료:
 - **JSON Formatter** (`/tools/json-formatter`) — 포맷/검증/Auto-fix/Minify, Tree view (expand/collapse, path copy, search), Diff view
 - **Regex Tester** (`/tools/regex-tester`) — 실시간 매칭 하이라이트, 플래그 토글, 캡처 그룹 표시, ₩→\\ 자동변환
-- **Text Diff** (`/tools/text-diff`) — Split/Unified view, 라인별 diff, 공백 무시 옵션
-- **Base64** (`/tools/base64`) — Text/URL Safe/Image/JWT Decode 4탭, 브라우저 내장 btoa/atob 사용 (외부 패키지 없음)
+- **Text Diff** (`/tools/text-diff`) — Split/Unified view, 라인별 diff, 공백 무시 옵션, 괄호 그룹 단위 인라인 diff (paren-aware tokenizer + diffArrays), Unified view 전체 추가/삭제 줄 mark 하이라이트
+- **Base64** (`/tools/base64`) — Text/URL Safe/Image 3탭, 브라우저 내장 btoa/atob 사용 (외부 패키지 없음)
+- **JWT Inspector** (`/tools/jwt-decoder`) — Header/Payload/Signature 분리, exp 라이브 카운트다운, alg:none 보안 경고, HS256/384/512 HMAC 검증 + RS256/384/512·PS256/384/512·ES256/384/512 비대칭 PEM 공개키 검증 (Web Crypto API, 외부 라이브러리 없음)
 
 개발 예정 (순서대로):
 1. **UUID Generator** (`/tools/uuid-generator`)
@@ -104,8 +107,9 @@ Always dark — no light mode toggle.
 - `components/layout/navbar.tsx` — Fixed top navbar (server)
 - `components/tools/json-formatter/json-formatter-client.tsx` — **Client**, JSON formatter (jsonrepair)
 - `components/tools/regex-tester/regex-tester-client.tsx` — **Client**, Regex tester
-- `components/tools/text-diff/text-diff-client.tsx` — **Client**, Text diff (diff 라이브러리)
-- `components/tools/base64/base64-client.tsx` — **Client**, Base64 encoder/decoder (Text, URL Safe, Image, JWT 4탭)
+- `components/tools/text-diff/text-diff-client.tsx` — **Client**, Text diff (diffLines + diffArrays, paren-aware 인라인 diff)
+- `components/tools/base64/base64-client.tsx` — **Client**, Base64 encoder/decoder (Text, URL Safe, Image 3탭)
+- `components/tools/jwt-decoder/jwt-decoder-client.tsx` — **Client**, JWT Inspector (Header/Payload/Signature 카드, 실시간 exp 카운트다운, alg:none 보안 경고, HMAC + 비대칭 PEM 서명 검증)
 - `components/ui/` — shadcn components (none installed yet; add via `pnpm dlx shadcn@latest add <name>`)
 
 ## Key Dependencies
