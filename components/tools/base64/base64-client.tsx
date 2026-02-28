@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useCallback } from "react";
-import { Copy, Check, Trash2, ArrowRightLeft, Image } from "lucide-react";
+import { Copy, Check, Trash2, ArrowRightLeft, Image, ShieldCheck } from "lucide-react";
 
 type TabId = "text" | "urlsafe" | "image";
 type Mode = "encode" | "decode";
@@ -690,14 +690,34 @@ export default function Base64Client() {
   const [activeTab, setActiveTab] = useState<TabId>("text");
 
   return (
-    <div
-      style={{
-        border: "1px solid var(--terminal-border)",
-        borderRadius: "10px",
-        overflow: "hidden",
-        backgroundColor: "rgba(10, 14, 26, 0.6)",
-      }}
-    >
+    <div style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
+      {/* Client-side badge */}
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: "6px",
+          padding: "6px 12px",
+          borderRadius: "6px",
+          border: "1px solid rgba(0,255,136,0.15)",
+          backgroundColor: "rgba(0,255,136,0.05)",
+          width: "fit-content",
+        }}
+      >
+        <ShieldCheck size={12} style={{ color: "var(--terminal-green)", flexShrink: 0 }} />
+        <span style={{ fontFamily: monoFont, fontSize: "0.68rem", color: "var(--code-comment)" }}>
+          100% client-side — no data leaves your browser
+        </span>
+      </div>
+
+      <div
+        style={{
+          border: "1px solid var(--terminal-border)",
+          borderRadius: "10px",
+          overflow: "hidden",
+          backgroundColor: "rgba(10, 14, 26, 0.6)",
+        }}
+      >
       {/* Window titlebar */}
       <div
         style={{
@@ -766,6 +786,7 @@ export default function Base64Client() {
         {activeTab === "urlsafe" && <TextTab urlSafe />}
         {activeTab === "image" && <ImageTab />}
       </div>
+    </div>
     </div>
   );
 }

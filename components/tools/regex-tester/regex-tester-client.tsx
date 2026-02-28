@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { Copy, Check, Trash2, AlertCircle } from "lucide-react";
+import { Copy, Check, Trash2, AlertCircle, ShieldCheck } from "lucide-react";
 
 type Status = "idle" | "ready" | "match" | "nomatch" | "error";
 
@@ -189,6 +189,25 @@ export default function RegexTesterClient() {
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
+      {/* Client-side badge */}
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: "6px",
+          padding: "6px 12px",
+          borderRadius: "6px",
+          border: "1px solid rgba(0,255,136,0.15)",
+          backgroundColor: "rgba(0,255,136,0.05)",
+          width: "fit-content",
+        }}
+      >
+        <ShieldCheck size={12} style={{ color: "var(--terminal-green)", flexShrink: 0 }} />
+        <span style={{ fontFamily: monoFont, fontSize: "0.68rem", color: "var(--code-comment)" }}>
+          100% client-side — no data leaves your browser
+        </span>
+      </div>
+
       {/* Pattern Input Panel */}
       <div
         style={{

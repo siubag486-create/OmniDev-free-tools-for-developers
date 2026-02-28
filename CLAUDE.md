@@ -105,6 +105,7 @@ Always dark — no light mode toggle.
 
 - `components/hero/terminal-hero.tsx` — **Client**, typewriter animation + tool CTA buttons
 - `components/layout/navbar.tsx` — Fixed top navbar (server)
+- `components/layout/tool-nav-sidebar.tsx` — Tool navigation sidebar (server)
 - `components/tools/json-formatter/json-formatter-client.tsx` — **Client**, JSON formatter (jsonrepair)
 - `components/tools/regex-tester/regex-tester-client.tsx` — **Client**, Regex tester
 - `components/tools/text-diff/text-diff-client.tsx` — **Client**, Text diff (diffLines + diffArrays, paren-aware 인라인 diff)
