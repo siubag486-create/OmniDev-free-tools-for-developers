@@ -8,6 +8,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 -ALWAYS ask user for permission when implementing a plan
 -NEVER use emoji for design.
 -ALWAYS prioritize server component over client component
+-NEVER write or modify any code unless the user explicitly asks you to implement something. If the user asks a question, only answer it — do not write, edit, or create any code.
 
 ## Commands
 
@@ -78,36 +79,45 @@ Always dark — no light mode toggle.
 ## Routes
 
 - `/` — Homepage with `TerminalHero` + features section
-- `/tools/json-formatter` — JSON formatter tool (완료)
+- `/tools/json-formatter` — JSON Formatter & Validator (완료)
 - `/tools/regex-tester` — Regex Tester (완료)
-- `/tools/base64` — Base64 Encoder/Decoder (개발예정 1순위)
-- `/tools/uuid-generator` — UUID Generator (개발예정 2순위)
-- `/tools/hash-generator` — Hash Generator (개발예정 3순위)
-- `/tools/text-diff` — Text Diff Tool (개발예정 4순위)
+- `/tools/text-diff` — Text Diff Tool (완료)
+- `/tools/base64` — Base64 Encoder/Decoder (완료)
+- `/tools/uuid-generator` — UUID Generator (개발예정 1순위)
+- `/tools/hash-generator` — Hash Generator (개발예정 2순위)
 
 ## Tools Roadmap
 
 개발 완료:
-- **JSON Formatter** (`/tools/json-formatter`) — JSON 포맷/검증/Auto-fix
-- **Regex Tester** (`/tools/regex-tester`) — 실시간 매칭 하이라이트, 플래그 토글, 캡처 그룹 표시
+- **JSON Formatter** (`/tools/json-formatter`) — 포맷/검증/Auto-fix/Minify, Tree view (expand/collapse, path copy, search), Diff view
+- **Regex Tester** (`/tools/regex-tester`) — 실시간 매칭 하이라이트, 플래그 토글, 캡처 그룹 표시, ₩→\\ 자동변환
+- **Text Diff** (`/tools/text-diff`) — Split/Unified view, 라인별 diff, 공백 무시 옵션
+- **Base64** (`/tools/base64`) — Text/URL Safe/Image/JWT Decode 4탭, 브라우저 내장 btoa/atob 사용 (외부 패키지 없음)
 
 개발 예정 (순서대로):
-1. **Base64 Encoder/Decoder** (`/tools/base64`) — Base64 인코딩/디코딩, JWT 토큰 분해
-2. **UUID Generator** (`/tools/uuid-generator`) — v4/v1/v7 UUID 생성, 대량 생성 지원
-3. **Hash Generator** (`/tools/hash-generator`) — MD5, SHA-256, SHA-512 해시 생성
-4. **Text Diff Tool** (`/tools/text-diff`) — 두 텍스트 비교, 변경사항 시각화
+1. **UUID Generator** (`/tools/uuid-generator`)
+2. **Hash Generator** (`/tools/hash-generator`)
 
 ## Components
 
 - `components/hero/terminal-hero.tsx` — **Client**, typewriter animation + tool CTA buttons
-- `components/layout/navbar.tsx` — Fixed top navbar with JSON / Regex links (server)
-- `components/tools/json-formatter/json-formatter-client.tsx` — **Client**, JSON formatter
-- `components/tools/regex-tester/regex-tester-client.tsx` — **Client**, Regex tester (₩→\\ auto-convert)
-- `components/ui/` — shadcn components: badge, button, card, progress, scroll-area, separator, tabs
+- `components/layout/navbar.tsx` — Fixed top navbar (server)
+- `components/tools/json-formatter/json-formatter-client.tsx` — **Client**, JSON formatter (jsonrepair)
+- `components/tools/regex-tester/regex-tester-client.tsx` — **Client**, Regex tester
+- `components/tools/text-diff/text-diff-client.tsx` — **Client**, Text diff (diff 라이브러리)
+- `components/tools/base64/base64-client.tsx` — **Client**, Base64 encoder/decoder (Text, URL Safe, Image, JWT 4탭)
+- `components/ui/` — shadcn components (none installed yet; add via `pnpm dlx shadcn@latest add <name>`)
+
+## Key Dependencies
+
+- `jsonrepair` — JSON Auto-fix 기능
+- `diff` — Text Diff 연산
+- `highlight.js` — 코드 하이라이팅
+- `lucide-react` — 아이콘
+- `radix-ui` — 헤드리스 UI primitives (shadcn 기반)
 
 ## Data / Lib
 
-- `lib/stages-data.ts` — 6-stage curriculum data (`Stage`, `Section` types)
 - `lib/utils.ts` — `cn()` helper (clsx + tailwind-merge)
 
 ## Tailwind v4 Notes
