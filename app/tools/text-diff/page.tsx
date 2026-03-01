@@ -165,6 +165,268 @@ export default function TextDiffPage() {
 
           {/* Tool */}
           <TextDiffClient />
+
+          {/* Description section */}
+          <div style={{ marginTop: "60px" }}>
+            <div
+              style={{
+                height: "1px",
+                backgroundColor: "rgba(0,255,136,0.1)",
+                marginBottom: "40px",
+              }}
+            />
+
+            <h2
+              style={{
+                fontFamily: monoFont,
+                fontSize: "1.1rem",
+                fontWeight: 700,
+                color: "var(--terminal-green)",
+                marginBottom: "16px",
+                letterSpacing: "-0.01em",
+              }}
+            >
+              What is a Diff?
+            </h2>
+            <p
+              style={{
+                fontFamily: monoFont,
+                fontSize: "0.82rem",
+                color: "var(--comment-gray)",
+                lineHeight: 1.85,
+                marginBottom: "14px",
+                maxWidth: "720px",
+              }}
+            >
+              A diff (short for &quot;difference&quot;) is an algorithm-generated
+              comparison between two text inputs that pinpoints exactly what was
+              added, removed, or remained unchanged. The concept was popularised
+              by the Unix{" "}
+              <code
+                style={{
+                  fontFamily: monoFont,
+                  color: "rgba(255,255,255,0.6)",
+                  fontSize: "0.78rem",
+                }}
+              >
+                diff
+              </code>{" "}
+              command, first released in 1974, and has since become foundational
+              to version control systems like Git, code review platforms like
+              GitHub and GitLab, and deployment tooling.
+            </p>
+            <p
+              style={{
+                fontFamily: monoFont,
+                fontSize: "0.82rem",
+                color: "var(--comment-gray)",
+                lineHeight: 1.85,
+                marginBottom: "28px",
+                maxWidth: "720px",
+              }}
+            >
+              The most common diff algorithm is{" "}
+              <span style={{ color: "rgba(255,255,255,0.65)" }}>
+                Myers&apos; algorithm (1986)
+              </span>
+              , which finds the shortest edit script (SES) — the minimum number
+              of insertions and deletions to transform one text into another.
+              This is the same algorithm used by Git internally.
+            </p>
+
+            <h2
+              style={{
+                fontFamily: monoFont,
+                fontSize: "1.1rem",
+                fontWeight: 700,
+                color: "var(--terminal-green)",
+                marginBottom: "16px",
+                letterSpacing: "-0.01em",
+              }}
+            >
+              View Modes
+            </h2>
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "1fr 1fr",
+                gap: "12px",
+                marginBottom: "28px",
+                maxWidth: "720px",
+              }}
+            >
+              {[
+                {
+                  name: "Split View",
+                  desc: "Original on the left, modified on the right. Deleted lines appear only on the left, added lines only on the right. Best for reviewing short-to-medium changes.",
+                },
+                {
+                  name: "Unified View",
+                  desc: "Both versions merged into a single column. Lines marked with + (green) are additions, lines with - (red) are deletions. Familiar from Git diffs and patch files.",
+                },
+              ].map(({ name, desc }) => (
+                <div
+                  key={name}
+                  style={{
+                    padding: "16px",
+                    border: "1px solid rgba(0,255,136,0.08)",
+                    borderRadius: "6px",
+                    backgroundColor: "rgba(0,255,136,0.02)",
+                  }}
+                >
+                  <p
+                    style={{
+                      fontFamily: monoFont,
+                      fontSize: "0.8rem",
+                      fontWeight: 700,
+                      color: "rgba(255,255,255,0.65)",
+                      marginBottom: "8px",
+                    }}
+                  >
+                    {name}
+                  </p>
+                  <p
+                    style={{
+                      fontFamily: monoFont,
+                      fontSize: "0.75rem",
+                      color: "var(--comment-gray)",
+                      lineHeight: 1.7,
+                      opacity: 0.8,
+                    }}
+                  >
+                    {desc}
+                  </p>
+                </div>
+              ))}
+            </div>
+
+            <h2
+              style={{
+                fontFamily: monoFont,
+                fontSize: "1.1rem",
+                fontWeight: 700,
+                color: "var(--terminal-green)",
+                marginBottom: "16px",
+                letterSpacing: "-0.01em",
+              }}
+            >
+              Common Use Cases
+            </h2>
+            <div
+              style={{
+                border: "1px solid rgba(88,166,255,0.12)",
+                borderRadius: "6px",
+                backgroundColor: "rgba(88,166,255,0.02)",
+                padding: "16px 20px",
+                maxWidth: "720px",
+              }}
+            >
+              <pre
+                style={{
+                  margin: 0,
+                  fontFamily: monoFont,
+                  fontSize: "0.75rem",
+                  lineHeight: "2",
+                  color: "var(--comment-gray)",
+                  whiteSpace: "pre-wrap",
+                }}
+              >
+                <span style={{ color: "var(--terminal-green)", opacity: 0.7 }}>-</span>{" Comparing two versions of a config file (nginx, docker-compose)\n"}
+                <span style={{ color: "var(--terminal-green)", opacity: 0.7 }}>-</span>{" Reviewing changes in a code snippet before committing\n"}
+                <span style={{ color: "var(--terminal-green)", opacity: 0.7 }}>-</span>{" Checking what changed between two API responses (REST, GraphQL)\n"}
+                <span style={{ color: "var(--terminal-green)", opacity: 0.7 }}>-</span>{" Proofreading document edits and contract revisions\n"}
+                <span style={{ color: "var(--terminal-green)", opacity: 0.7 }}>-</span>{" Diffing SQL migrations or database schema changes\n"}
+                <span style={{ color: "var(--terminal-green)", opacity: 0.7 }}>-</span>{" Comparing environment variable files (.env.local vs .env.production)\n"}
+                <span style={{ color: "var(--terminal-green)", opacity: 0.7 }}>-</span>{" Auditing Dockerfile or GitHub Actions workflow changes\n"}
+                <span style={{ color: "var(--terminal-green)", opacity: 0.7 }}>-</span>{" Comparing two versions of a localization/translation file\n"}
+                <span style={{ color: "rgba(88,166,255,0.5)", fontSize: "0.68rem" }}>{"* Enable 'Ignore whitespace' to focus on semantic changes only"}</span>
+              </pre>
+            </div>
+
+            <h2
+              style={{
+                fontFamily: monoFont,
+                fontSize: "1.1rem",
+                fontWeight: 700,
+                color: "var(--terminal-green)",
+                marginBottom: "16px",
+                letterSpacing: "-0.01em",
+                marginTop: "28px",
+              }}
+            >
+              How to Read a Diff
+            </h2>
+            <div
+              style={{
+                border: "1px solid rgba(0,255,136,0.1)",
+                borderRadius: "6px",
+                backgroundColor: "rgba(0,0,0,0.3)",
+                overflow: "hidden",
+                maxWidth: "720px",
+              }}
+            >
+              <div
+                style={{
+                  padding: "6px 14px",
+                  borderBottom: "1px solid rgba(0,255,136,0.08)",
+                  backgroundColor: "rgba(0,255,136,0.04)",
+                }}
+              >
+                <p
+                  style={{
+                    fontFamily: monoFont,
+                    fontSize: "0.65rem",
+                    color: "var(--terminal-green)",
+                    opacity: 0.7,
+                    fontWeight: 700,
+                    letterSpacing: "0.06em",
+                  }}
+                >
+                  // Unified diff example (Git-style)
+                </p>
+              </div>
+              <pre
+                style={{
+                  margin: 0,
+                  padding: "14px 16px",
+                  fontFamily: monoFont,
+                  fontSize: "0.75rem",
+                  lineHeight: "1.9",
+                  whiteSpace: "pre-wrap",
+                }}
+              >
+                <span style={{ color: "var(--comment-gray)", opacity: 0.5 }}>{"@@ -1,5 +1,5 @@\n"}</span>
+                <span style={{ color: "var(--comment-gray)", opacity: 0.6 }}>{" const config = {\n"}</span>
+                <span style={{ color: "rgba(255,100,100,0.75)" }}>-{"  timeout: 3000,\n"}</span>
+                <span style={{ color: "var(--terminal-green)", opacity: 0.75 }}>+{"  timeout: 5000,\n"}</span>
+                <span style={{ color: "var(--comment-gray)", opacity: 0.6 }}>{"  retries: 3,\n"}</span>
+                <span style={{ color: "rgba(255,100,100,0.75)" }}>-{"  debug: false\n"}</span>
+                <span style={{ color: "var(--terminal-green)", opacity: 0.75 }}>+{"  debug: true\n"}</span>
+                <span style={{ color: "var(--comment-gray)", opacity: 0.6 }}>{" };"}</span>
+              </pre>
+              <div
+                style={{
+                  borderTop: "1px solid rgba(88,166,255,0.08)",
+                  padding: "10px 16px",
+                  display: "flex",
+                  gap: "20px",
+                }}
+              >
+                <p style={{ fontFamily: monoFont, fontSize: "0.68rem", color: "rgba(255,100,100,0.6)" }}>
+                  - Red / removed
+                </p>
+                <p style={{ fontFamily: monoFont, fontSize: "0.68rem", color: "var(--terminal-green)", opacity: 0.7 }}>
+                  + Green / added
+                </p>
+                <p style={{ fontFamily: monoFont, fontSize: "0.68rem", color: "var(--comment-gray)", opacity: 0.5 }}>
+                  (space) unchanged
+                </p>
+                <p style={{ fontFamily: monoFont, fontSize: "0.68rem", color: "rgba(88,166,255,0.5)" }}>
+                  @@ hunk header
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* Sidebar */}

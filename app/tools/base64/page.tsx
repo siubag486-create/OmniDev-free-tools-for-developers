@@ -190,6 +190,352 @@ export default function Base64Page() {
 
           {/* Tool */}
           <Base64Client />
+
+          {/* Description section */}
+          <div style={{ marginTop: "60px" }}>
+            <div
+              style={{
+                height: "1px",
+                backgroundColor: "rgba(0,255,136,0.1)",
+                marginBottom: "40px",
+              }}
+            />
+
+            <h2
+              style={{
+                fontFamily: monoFont,
+                fontSize: "1.1rem",
+                fontWeight: 700,
+                color: "var(--terminal-green)",
+                marginBottom: "16px",
+                letterSpacing: "-0.01em",
+              }}
+            >
+              What is Base64?
+            </h2>
+            <p
+              style={{
+                fontFamily: monoFont,
+                fontSize: "0.82rem",
+                color: "var(--comment-gray)",
+                lineHeight: 1.85,
+                marginBottom: "14px",
+                maxWidth: "720px",
+              }}
+            >
+              Base64 is a binary-to-text encoding scheme that represents binary
+              data using a set of 64 printable ASCII characters: A–Z, a–z, 0–9,
+              +, and /. The name "Base64" refers to this 64-character alphabet.
+              It was originally designed to allow binary data (such as images,
+              audio, or executable files) to be safely transmitted over
+              text-only channels such as email (SMTP) or embedded in XML and
+              JSON payloads.
+            </p>
+            <p
+              style={{
+                fontFamily: monoFont,
+                fontSize: "0.82rem",
+                color: "var(--comment-gray)",
+                lineHeight: 1.85,
+                marginBottom: "28px",
+                maxWidth: "720px",
+              }}
+            >
+              Base64 is defined in{" "}
+              <span style={{ color: "rgba(255,255,255,0.65)" }}>RFC 4648</span>.
+              It is not encryption — it is a reversible encoding. Anyone with
+              the encoded string can trivially decode it. Never use Base64 as a
+              security measure.
+            </p>
+
+            <h2
+              style={{
+                fontFamily: monoFont,
+                fontSize: "1.1rem",
+                fontWeight: 700,
+                color: "var(--terminal-green)",
+                marginBottom: "16px",
+                letterSpacing: "-0.01em",
+              }}
+            >
+              How Base64 Encoding Works
+            </h2>
+            <p
+              style={{
+                fontFamily: monoFont,
+                fontSize: "0.82rem",
+                color: "var(--comment-gray)",
+                lineHeight: 1.85,
+                marginBottom: "14px",
+                maxWidth: "720px",
+              }}
+            >
+              Base64 works by taking 3 bytes (24 bits) of input at a time and
+              splitting them into 4 groups of 6 bits each. Each 6-bit group is
+              then mapped to one of the 64 printable characters. Because
+              3 bytes become 4 characters, Base64-encoded data is approximately
+              33% larger than the original binary data.
+            </p>
+            <div
+              style={{
+                border: "1px solid rgba(0,255,136,0.1)",
+                borderRadius: "6px",
+                backgroundColor: "rgba(0,0,0,0.3)",
+                padding: "16px 20px",
+                marginBottom: "28px",
+                maxWidth: "720px",
+              }}
+            >
+              <pre
+                style={{
+                  margin: 0,
+                  fontFamily: monoFont,
+                  fontSize: "0.75rem",
+                  lineHeight: "1.8",
+                  color: "var(--comment-gray)",
+                  whiteSpace: "pre-wrap",
+                }}
+              >
+                <span style={{ color: "rgba(88,166,255,0.6)" }}>{`// Encoding "Man" → "TWFu"\n`}</span>
+                <span style={{ color: "rgba(255,255,255,0.4)" }}>Input:  </span><span style={{ color: "var(--terminal-green)", opacity: 0.8 }}>{"M        a        n\n"}</span>
+                <span style={{ color: "rgba(255,255,255,0.4)" }}>ASCII:  </span>{"77       97       110\n"}
+                <span style={{ color: "rgba(255,255,255,0.4)" }}>Binary: </span>{"01001101 01100001 01101110\n"}
+                <span style={{ color: "rgba(255,255,255,0.4)" }}>Groups: </span><span style={{ color: "var(--electric-blue)", opacity: 0.8 }}>{"010011  010110  000101  101110\n"}</span>
+                <span style={{ color: "rgba(255,255,255,0.4)" }}>Index:  </span>{"19      22      5       46\n"}
+                <span style={{ color: "rgba(255,255,255,0.4)" }}>Output: </span><span style={{ color: "var(--terminal-green)", opacity: 0.8 }}>{"T       W       F       u"}</span>
+              </pre>
+            </div>
+
+            <h2
+              style={{
+                fontFamily: monoFont,
+                fontSize: "1.1rem",
+                fontWeight: 700,
+                color: "var(--terminal-green)",
+                marginBottom: "16px",
+                letterSpacing: "-0.01em",
+              }}
+            >
+              Standard vs URL-Safe Base64
+            </h2>
+            <div
+              style={{
+                border: "1px solid rgba(88,166,255,0.12)",
+                borderRadius: "6px",
+                backgroundColor: "rgba(88,166,255,0.02)",
+                overflow: "hidden",
+                marginBottom: "28px",
+                maxWidth: "720px",
+              }}
+            >
+              {[
+                {
+                  label: "Standard Base64",
+                  chars: "+ / =",
+                  note: "Uses + and / as special characters. The = sign pads output to a multiple of 4 characters. Safe for most text transmission but NOT safe in URLs.",
+                },
+                {
+                  label: "URL-Safe Base64",
+                  chars: "- _ (no padding)",
+                  note: "Replaces + with -, / with _, and omits = padding. Safe to include directly in URLs and filenames without percent-encoding. Used in JWTs, OAuth tokens, and web APIs.",
+                },
+              ].map(({ label, chars, note }, i) => (
+                <div
+                  key={label}
+                  style={{
+                    padding: "14px 18px",
+                    borderBottom: i === 0 ? "1px solid rgba(88,166,255,0.08)" : undefined,
+                  }}
+                >
+                  <div style={{ display: "flex", alignItems: "baseline", gap: "10px", marginBottom: "6px" }}>
+                    <p
+                      style={{
+                        fontFamily: monoFont,
+                        fontSize: "0.8rem",
+                        fontWeight: 700,
+                        color: "rgba(255,255,255,0.65)",
+                      }}
+                    >
+                      {label}
+                    </p>
+                    <code
+                      style={{
+                        fontFamily: monoFont,
+                        fontSize: "0.72rem",
+                        color: "var(--terminal-green)",
+                        opacity: 0.7,
+                      }}
+                    >
+                      {chars}
+                    </code>
+                  </div>
+                  <p
+                    style={{
+                      fontFamily: monoFont,
+                      fontSize: "0.75rem",
+                      color: "var(--comment-gray)",
+                      lineHeight: 1.7,
+                      opacity: 0.8,
+                    }}
+                  >
+                    {note}
+                  </p>
+                </div>
+              ))}
+            </div>
+
+            <h2
+              style={{
+                fontFamily: monoFont,
+                fontSize: "1.1rem",
+                fontWeight: 700,
+                color: "var(--terminal-green)",
+                marginBottom: "16px",
+                letterSpacing: "-0.01em",
+              }}
+            >
+              Common Use Cases
+            </h2>
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))",
+                gap: "10px",
+                marginBottom: "28px",
+                maxWidth: "720px",
+              }}
+            >
+              {[
+                {
+                  title: "Embedding Images",
+                  desc: "Inline images in HTML/CSS as data: URLs — no extra HTTP request needed",
+                },
+                {
+                  title: "JWT Tokens",
+                  desc: "JSON Web Tokens use URL-safe Base64 to encode header and payload segments",
+                },
+                {
+                  title: "Basic Auth",
+                  desc: 'HTTP Basic Authentication encodes "username:password" in Base64 in headers',
+                },
+                {
+                  title: "Email Attachments",
+                  desc: "MIME encoding uses Base64 to embed binary files in plain-text email messages",
+                },
+                {
+                  title: "API Payloads",
+                  desc: "Sending binary data (PDFs, images) in JSON or XML API request bodies",
+                },
+                {
+                  title: "CSS Backgrounds",
+                  desc: "Embedding small icons and SVGs as base64 data URIs in CSS background-image",
+                },
+              ].map(({ title, desc }) => (
+                <div
+                  key={title}
+                  style={{
+                    padding: "12px 14px",
+                    border: "1px solid rgba(0,255,136,0.08)",
+                    borderRadius: "6px",
+                    backgroundColor: "rgba(0,255,136,0.02)",
+                  }}
+                >
+                  <p
+                    style={{
+                      fontFamily: monoFont,
+                      fontSize: "0.78rem",
+                      fontWeight: 700,
+                      color: "rgba(255,255,255,0.65)",
+                      marginBottom: "5px",
+                    }}
+                  >
+                    {title}
+                  </p>
+                  <p
+                    style={{
+                      fontFamily: monoFont,
+                      fontSize: "0.72rem",
+                      color: "var(--comment-gray)",
+                      lineHeight: 1.6,
+                      opacity: 0.75,
+                    }}
+                  >
+                    {desc}
+                  </p>
+                </div>
+              ))}
+            </div>
+
+            <h2
+              style={{
+                fontFamily: monoFont,
+                fontSize: "1.1rem",
+                fontWeight: 700,
+                color: "var(--terminal-green)",
+                marginBottom: "16px",
+                letterSpacing: "-0.01em",
+              }}
+            >
+              Data URL Format
+            </h2>
+            <p
+              style={{
+                fontFamily: monoFont,
+                fontSize: "0.82rem",
+                color: "var(--comment-gray)",
+                lineHeight: 1.85,
+                marginBottom: "12px",
+                maxWidth: "720px",
+              }}
+            >
+              A Data URL (or data URI) embeds file content directly in a URL
+              string. It follows the format:
+            </p>
+            <div
+              style={{
+                border: "1px solid rgba(0,255,136,0.1)",
+                borderRadius: "6px",
+                backgroundColor: "rgba(0,0,0,0.3)",
+                padding: "14px 18px",
+                marginBottom: "14px",
+                maxWidth: "720px",
+              }}
+            >
+              <code
+                style={{
+                  fontFamily: monoFont,
+                  fontSize: "0.75rem",
+                  color: "var(--terminal-green)",
+                  opacity: 0.85,
+                }}
+              >
+                data:[mediatype][;base64],[data]
+              </code>
+            </div>
+            <p
+              style={{
+                fontFamily: monoFont,
+                fontSize: "0.78rem",
+                color: "var(--comment-gray)",
+                lineHeight: 1.7,
+                maxWidth: "720px",
+                opacity: 0.75,
+              }}
+            >
+              Example:{" "}
+              <code
+                style={{
+                  color: "rgba(88,166,255,0.7)",
+                  fontSize: "0.72rem",
+                }}
+              >
+                data:image/png;base64,iVBORw0KGgo...
+              </code>{" "}
+              — can be used directly as an img src, CSS background-image, or
+              href attribute. The Image tab in this tool generates all three
+              formats automatically.
+            </p>
+          </div>
         </div>
 
         {/* Sidebar */}

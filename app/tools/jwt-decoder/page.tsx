@@ -183,6 +183,385 @@ export default function JwtDecoderPage() {
 
           {/* Tool */}
           <JwtDecoderClient />
+
+          {/* Description section */}
+          <div style={{ marginTop: "60px" }}>
+            <div
+              style={{
+                height: "1px",
+                backgroundColor: "rgba(0,255,136,0.1)",
+                marginBottom: "40px",
+              }}
+            />
+
+            <h2
+              style={{
+                fontFamily: monoFont,
+                fontSize: "1.1rem",
+                fontWeight: 700,
+                color: "var(--terminal-green)",
+                marginBottom: "16px",
+                letterSpacing: "-0.01em",
+              }}
+            >
+              What is a JWT?
+            </h2>
+            <p
+              style={{
+                fontFamily: monoFont,
+                fontSize: "0.82rem",
+                color: "var(--comment-gray)",
+                lineHeight: 1.85,
+                marginBottom: "14px",
+                maxWidth: "720px",
+              }}
+            >
+              JSON Web Token (JWT) is an open standard (
+              <span style={{ color: "rgba(255,255,255,0.65)" }}>RFC 7519</span>)
+              that defines a compact, self-contained way to securely transmit
+              information between parties as a JSON object. JWTs are widely
+              used for authentication and authorization in modern web
+              applications — particularly in REST APIs and Single Page Apps
+              (SPAs). After a user logs in, the server issues a JWT that the
+              client sends with every subsequent request to prove identity.
+            </p>
+            <p
+              style={{
+                fontFamily: monoFont,
+                fontSize: "0.82rem",
+                color: "var(--comment-gray)",
+                lineHeight: 1.85,
+                marginBottom: "28px",
+                maxWidth: "720px",
+              }}
+            >
+              A JWT looks like three Base64URL-encoded strings separated by
+              dots:{" "}
+              <code
+                style={{
+                  fontFamily: monoFont,
+                  color: "var(--terminal-green)",
+                  opacity: 0.85,
+                  fontSize: "0.78rem",
+                }}
+              >
+                xxxxx.yyyyy.zzzzz
+              </code>
+            </p>
+
+            <h2
+              style={{
+                fontFamily: monoFont,
+                fontSize: "1.1rem",
+                fontWeight: 700,
+                color: "var(--terminal-green)",
+                marginBottom: "16px",
+                letterSpacing: "-0.01em",
+              }}
+            >
+              Three-Part Structure
+            </h2>
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fill, minmax(210px, 1fr))",
+                gap: "12px",
+                marginBottom: "32px",
+                maxWidth: "720px",
+              }}
+            >
+              {[
+                {
+                  part: "Header",
+                  color: "rgba(255,150,100,0.85)",
+                  desc: "Contains metadata about the token — the algorithm used to sign it (alg) and the token type (typ). Common algorithms: HS256, RS256, ES256.",
+                  example: `{\n  "alg": "HS256",\n  "typ": "JWT"\n}`,
+                },
+                {
+                  part: "Payload",
+                  color: "rgba(100,200,255,0.85)",
+                  desc: "The claims — statements about the user and any additional data. Contains registered claims (exp, iat, sub) and custom application data.",
+                  example: `{\n  "sub": "user_123",\n  "name": "Alice",\n  "exp": 1893456000\n}`,
+                },
+                {
+                  part: "Signature",
+                  color: "rgba(150,255,150,0.7)",
+                  desc: "Created by signing the encoded header and payload with a secret key (HMAC) or private key (RSA/ECDSA). Verifies the token has not been tampered with.",
+                  example: "HMACSHA256(\n  base64(header) +\n  \".\" +\n  base64(payload),\n  secret\n)",
+                },
+              ].map(({ part, color, desc, example }) => (
+                <div
+                  key={part}
+                  style={{
+                    border: `1px solid ${color.replace("0.85", "0.2").replace("0.7", "0.15")}`,
+                    borderRadius: "6px",
+                    backgroundColor: color.replace("0.85", "0.03").replace("0.7", "0.03"),
+                    overflow: "hidden",
+                  }}
+                >
+                  <div
+                    style={{
+                      padding: "6px 14px",
+                      borderBottom: `1px solid ${color.replace("0.85", "0.1").replace("0.7", "0.08")}`,
+                      backgroundColor: color.replace("0.85", "0.06").replace("0.7", "0.05"),
+                    }}
+                  >
+                    <p
+                      style={{
+                        fontFamily: monoFont,
+                        fontSize: "0.72rem",
+                        fontWeight: 700,
+                        color,
+                        letterSpacing: "0.05em",
+                      }}
+                    >
+                      {part}
+                    </p>
+                  </div>
+                  <div style={{ padding: "12px 14px" }}>
+                    <p
+                      style={{
+                        fontFamily: monoFont,
+                        fontSize: "0.73rem",
+                        color: "var(--comment-gray)",
+                        lineHeight: 1.7,
+                        marginBottom: "10px",
+                        opacity: 0.85,
+                      }}
+                    >
+                      {desc}
+                    </p>
+                    <pre
+                      style={{
+                        margin: 0,
+                        fontFamily: monoFont,
+                        fontSize: "0.68rem",
+                        color: "var(--comment-gray)",
+                        opacity: 0.55,
+                        lineHeight: 1.6,
+                        whiteSpace: "pre-wrap",
+                      }}
+                    >
+                      {example}
+                    </pre>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <h2
+              style={{
+                fontFamily: monoFont,
+                fontSize: "1.1rem",
+                fontWeight: 700,
+                color: "var(--terminal-green)",
+                marginBottom: "16px",
+                letterSpacing: "-0.01em",
+              }}
+            >
+              Standard Claims (Registered)
+            </h2>
+            <div
+              style={{
+                border: "1px solid rgba(88,166,255,0.12)",
+                borderRadius: "6px",
+                backgroundColor: "rgba(88,166,255,0.02)",
+                overflow: "hidden",
+                marginBottom: "28px",
+                maxWidth: "720px",
+              }}
+            >
+              {[
+                { claim: "iss", name: "Issuer", desc: "Identifies the party that issued the JWT. Usually the authentication server URL." },
+                { claim: "sub", name: "Subject", desc: "Identifies the principal — typically a user ID or account identifier." },
+                { claim: "aud", name: "Audience", desc: "Identifies the recipients the JWT is intended for. The API or service that should accept it." },
+                { claim: "exp", name: "Expiration Time", desc: "UNIX timestamp after which the token must not be accepted. Always validate this claim." },
+                { claim: "iat", name: "Issued At", desc: "UNIX timestamp when the token was issued. Used to determine the token's age." },
+                { claim: "nbf", name: "Not Before", desc: "UNIX timestamp before which the token must not be accepted. Useful for future-dated tokens." },
+                { claim: "jti", name: "JWT ID", desc: "Unique identifier for the JWT. Can be used to prevent replay attacks." },
+              ].map(({ claim, name, desc }, i) => (
+                <div
+                  key={claim}
+                  style={{
+                    display: "flex",
+                    gap: "16px",
+                    padding: "10px 16px",
+                    borderBottom: i < 6 ? "1px solid rgba(88,166,255,0.06)" : undefined,
+                    alignItems: "flex-start",
+                  }}
+                >
+                  <code
+                    style={{
+                      fontFamily: monoFont,
+                      fontSize: "0.78rem",
+                      color: "var(--terminal-green)",
+                      opacity: 0.85,
+                      minWidth: "32px",
+                      flexShrink: 0,
+                      paddingTop: "1px",
+                    }}
+                  >
+                    {claim}
+                  </code>
+                  <div>
+                    <p
+                      style={{
+                        fontFamily: monoFont,
+                        fontSize: "0.75rem",
+                        fontWeight: 700,
+                        color: "rgba(255,255,255,0.55)",
+                        marginBottom: "2px",
+                      }}
+                    >
+                      {name}
+                    </p>
+                    <p
+                      style={{
+                        fontFamily: monoFont,
+                        fontSize: "0.72rem",
+                        color: "var(--comment-gray)",
+                        lineHeight: 1.6,
+                        opacity: 0.75,
+                      }}
+                    >
+                      {desc}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <h2
+              style={{
+                fontFamily: monoFont,
+                fontSize: "1.1rem",
+                fontWeight: 700,
+                color: "var(--terminal-green)",
+                marginBottom: "16px",
+                letterSpacing: "-0.01em",
+              }}
+            >
+              Signing Algorithms
+            </h2>
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))",
+                gap: "10px",
+                marginBottom: "28px",
+                maxWidth: "720px",
+              }}
+            >
+              {[
+                {
+                  alg: "HS256 / HS384 / HS512",
+                  type: "HMAC + SHA-2",
+                  desc: "Symmetric — same secret key signs and verifies. Fast and simple. Secret must be kept private on the server.",
+                },
+                {
+                  alg: "RS256 / RS384 / RS512",
+                  type: "RSA + SHA-2",
+                  desc: "Asymmetric — private key signs, public key verifies. Clients can verify tokens without knowing the secret.",
+                },
+                {
+                  alg: "ES256 / ES384 / ES512",
+                  type: "ECDSA + SHA-2",
+                  desc: "Asymmetric — like RS but using elliptic curves. Produces shorter signatures with equivalent security.",
+                },
+                {
+                  alg: "PS256 / PS384 / PS512",
+                  type: "RSA-PSS + SHA-2",
+                  desc: "Asymmetric — RSA with probabilistic signature scheme. More secure than RS variants against certain attacks.",
+                },
+              ].map(({ alg, type, desc }) => (
+                <div
+                  key={alg}
+                  style={{
+                    padding: "12px 14px",
+                    border: "1px solid rgba(0,255,136,0.08)",
+                    borderRadius: "6px",
+                    backgroundColor: "rgba(0,255,136,0.02)",
+                  }}
+                >
+                  <p
+                    style={{
+                      fontFamily: monoFont,
+                      fontSize: "0.75rem",
+                      fontWeight: 700,
+                      color: "rgba(255,255,255,0.65)",
+                      marginBottom: "3px",
+                    }}
+                  >
+                    {alg}
+                  </p>
+                  <p
+                    style={{
+                      fontFamily: monoFont,
+                      fontSize: "0.68rem",
+                      color: "var(--electric-blue)",
+                      opacity: 0.7,
+                      marginBottom: "6px",
+                    }}
+                  >
+                    {type}
+                  </p>
+                  <p
+                    style={{
+                      fontFamily: monoFont,
+                      fontSize: "0.72rem",
+                      color: "var(--comment-gray)",
+                      lineHeight: 1.6,
+                      opacity: 0.75,
+                    }}
+                  >
+                    {desc}
+                  </p>
+                </div>
+              ))}
+            </div>
+
+            <h2
+              style={{
+                fontFamily: monoFont,
+                fontSize: "1.1rem",
+                fontWeight: 700,
+                color: "var(--terminal-green)",
+                marginBottom: "16px",
+                letterSpacing: "-0.01em",
+              }}
+            >
+              Security Considerations
+            </h2>
+            <div
+              style={{
+                border: "1px solid rgba(255,100,100,0.18)",
+                borderRadius: "6px",
+                backgroundColor: "rgba(255,100,100,0.03)",
+                padding: "16px 20px",
+                maxWidth: "720px",
+              }}
+            >
+              <pre
+                style={{
+                  margin: 0,
+                  fontFamily: monoFont,
+                  fontSize: "0.75rem",
+                  lineHeight: "2",
+                  color: "var(--comment-gray)",
+                  whiteSpace: "pre-wrap",
+                }}
+              >
+                <span style={{ color: "rgba(255,100,100,0.8)", fontWeight: 700 }}>{"// Security Warnings\n"}</span>
+                <span style={{ color: "rgba(255,150,100,0.7)" }}>!</span>{" alg:none — tokens with no algorithm are unsigned and must always be rejected\n"}
+                <span style={{ color: "rgba(255,150,100,0.7)" }}>!</span>{" Weak secrets — HS256 secrets shorter than 32 bytes are brute-forceable\n"}
+                <span style={{ color: "rgba(255,150,100,0.7)" }}>!</span>{" Algorithm confusion — always validate the algorithm server-side; never trust the header alone\n"}
+                <span style={{ color: "rgba(255,150,100,0.7)" }}>!</span>{" JWT payload is only Base64-encoded, not encrypted — never store sensitive data in claims\n"}
+                <span style={{ color: "rgba(255,150,100,0.7)" }}>!</span>{" Always validate exp, iss, and aud claims server-side on every request\n"}
+                <span style={{ color: "rgba(255,150,100,0.7)" }}>!</span>{" Use short expiry times (15–60 min) and refresh token rotation for long sessions\n"}
+                <span style={{ color: "rgba(88,166,255,0.5)", fontSize: "0.68rem" }}>{"* This inspector decodes for inspection only — always verify tokens server-side in production"}</span>
+              </pre>
+            </div>
+          </div>
         </div>
 
         {/* Sidebar */}

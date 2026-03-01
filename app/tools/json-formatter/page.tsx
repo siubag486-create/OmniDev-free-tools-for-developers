@@ -189,6 +189,402 @@ export default function JsonFormatterPage() {
 
           {/* Tool */}
           <JsonFormatterClient />
+
+          {/* Description section */}
+          <div style={{ marginTop: "60px" }}>
+            <div
+              style={{
+                height: "1px",
+                backgroundColor: "rgba(0,255,136,0.1)",
+                marginBottom: "40px",
+              }}
+            />
+
+            <h2
+              style={{
+                fontFamily: monoFont,
+                fontSize: "1.1rem",
+                fontWeight: 700,
+                color: "var(--terminal-green)",
+                marginBottom: "16px",
+                letterSpacing: "-0.01em",
+              }}
+            >
+              What is JSON?
+            </h2>
+            <p
+              style={{
+                fontFamily: monoFont,
+                fontSize: "0.82rem",
+                color: "var(--comment-gray)",
+                lineHeight: 1.85,
+                marginBottom: "14px",
+                maxWidth: "720px",
+              }}
+            >
+              JSON (JavaScript Object Notation) is a lightweight, human-readable
+              data interchange format derived from JavaScript object syntax. It was
+              popularised by Douglas Crockford in the early 2000s and is now
+              defined by{" "}
+              <span style={{ color: "rgba(255,255,255,0.65)" }}>RFC 8259</span>{" "}
+              and{" "}
+              <span style={{ color: "rgba(255,255,255,0.65)" }}>ECMA-404</span>.
+              JSON has effectively replaced XML as the dominant format for REST
+              APIs, configuration files, NoSQL databases, and inter-service
+              communication.
+            </p>
+            <p
+              style={{
+                fontFamily: monoFont,
+                fontSize: "0.82rem",
+                color: "var(--comment-gray)",
+                lineHeight: 1.85,
+                marginBottom: "28px",
+                maxWidth: "720px",
+              }}
+            >
+              JSON supports exactly{" "}
+              <span style={{ color: "rgba(255,255,255,0.65)" }}>six data types</span>:{" "}
+              <span style={{ color: "rgba(255,200,100,0.8)" }}>string</span>,{" "}
+              <span style={{ color: "var(--terminal-green)", opacity: 0.8 }}>number</span>,{" "}
+              <span style={{ color: "rgba(150,200,255,0.8)" }}>boolean</span>{" "}(true/false),{" "}
+              <span style={{ color: "rgba(150,200,255,0.8)" }}>null</span>,{" "}
+              <span style={{ color: "rgba(255,255,255,0.55)" }}>object</span>{" "}(key-value pairs), and{" "}
+              <span style={{ color: "rgba(255,255,255,0.55)" }}>array</span>{" "}(ordered list). Every
+              other data type must be serialized as one of these six.
+            </p>
+
+            <h2
+              style={{
+                fontFamily: monoFont,
+                fontSize: "1.1rem",
+                fontWeight: 700,
+                color: "var(--terminal-green)",
+                marginBottom: "16px",
+                letterSpacing: "-0.01em",
+              }}
+            >
+              JSON Data Types with Examples
+            </h2>
+            <div
+              style={{
+                border: "1px solid rgba(88,166,255,0.12)",
+                borderRadius: "6px",
+                backgroundColor: "rgba(88,166,255,0.02)",
+                overflow: "hidden",
+                marginBottom: "28px",
+                maxWidth: "720px",
+              }}
+            >
+              {[
+                { type: "string",  color: "rgba(255,200,100,0.85)",  example: '"Hello, World!"',     note: "Must use double quotes. Supports Unicode and escape sequences (\\n, \\t, \\\")." },
+                { type: "number",  color: "var(--terminal-green)",   example: "42, 3.14, -7, 1e10",  note: "Integers and floats. No hex, octal, or Infinity. No leading zeros except 0.x." },
+                { type: "boolean", color: "rgba(150,200,255,0.85)",  example: "true, false",         note: "Must be lowercase. Not True, False, TRUE, or FALSE." },
+                { type: "null",    color: "rgba(150,200,255,0.65)",  example: "null",                note: "Represents the intentional absence of a value. Not undefined, None, or nil." },
+                { type: "object",  color: "rgba(255,255,255,0.55)",  example: '{ "key": "value" }',  note: "Unordered collection of key-value pairs. Keys must be unique strings." },
+                { type: "array",   color: "rgba(255,255,255,0.45)",  example: '[1, "two", true]',    note: "Ordered list of any JSON values. Elements can be mixed types." },
+              ].map(({ type, color, example, note }, i) => (
+                <div
+                  key={type}
+                  style={{
+                    display: "flex",
+                    gap: "14px",
+                    padding: "10px 16px",
+                    borderBottom: i < 5 ? "1px solid rgba(88,166,255,0.06)" : undefined,
+                    alignItems: "flex-start",
+                  }}
+                >
+                  <code
+                    style={{
+                      fontFamily: monoFont,
+                      fontSize: "0.72rem",
+                      color,
+                      minWidth: "52px",
+                      flexShrink: 0,
+                      paddingTop: "1px",
+                    }}
+                  >
+                    {type}
+                  </code>
+                  <div style={{ flex: 1 }}>
+                    <code
+                      style={{
+                        fontFamily: monoFont,
+                        fontSize: "0.72rem",
+                        color: "var(--comment-gray)",
+                        display: "block",
+                        marginBottom: "3px",
+                      }}
+                    >
+                      {example}
+                    </code>
+                    <p
+                      style={{
+                        fontFamily: monoFont,
+                        fontSize: "0.7rem",
+                        color: "var(--comment-gray)",
+                        opacity: 0.6,
+                        lineHeight: 1.5,
+                      }}
+                    >
+                      {note}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <h2
+              style={{
+                fontFamily: monoFont,
+                fontSize: "1.1rem",
+                fontWeight: 700,
+                color: "var(--terminal-green)",
+                marginBottom: "16px",
+                letterSpacing: "-0.01em",
+              }}
+            >
+              Valid JSON Rules & Common Mistakes
+            </h2>
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "1fr 1fr",
+                gap: "12px",
+                marginBottom: "28px",
+                maxWidth: "720px",
+              }}
+            >
+              <div
+                style={{
+                  border: "1px solid rgba(255,100,100,0.2)",
+                  borderRadius: "6px",
+                  backgroundColor: "rgba(255,100,100,0.03)",
+                  overflow: "hidden",
+                }}
+              >
+                <div
+                  style={{
+                    padding: "6px 14px",
+                    borderBottom: "1px solid rgba(255,100,100,0.1)",
+                    backgroundColor: "rgba(255,100,100,0.05)",
+                  }}
+                >
+                  <p
+                    style={{
+                      fontFamily: monoFont,
+                      fontSize: "0.65rem",
+                      color: "rgba(255,100,100,0.8)",
+                      fontWeight: 700,
+                      letterSpacing: "0.06em",
+                    }}
+                  >
+                    // Invalid JSON
+                  </p>
+                </div>
+                <pre
+                  style={{
+                    margin: 0,
+                    padding: "12px 14px",
+                    fontFamily: monoFont,
+                    fontSize: "0.72rem",
+                    lineHeight: "1.9",
+                    color: "rgba(255,100,100,0.6)",
+                    whiteSpace: "pre-wrap",
+                  }}
+                >
+                  {`{
+  'key': 'value',
+  "trailing": true,
+  // comment here
+  "num": 01,
+}`}
+                </pre>
+              </div>
+              <div
+                style={{
+                  border: "1px solid rgba(0,255,136,0.15)",
+                  borderRadius: "6px",
+                  backgroundColor: "rgba(0,255,136,0.02)",
+                  overflow: "hidden",
+                }}
+              >
+                <div
+                  style={{
+                    padding: "6px 14px",
+                    borderBottom: "1px solid rgba(0,255,136,0.1)",
+                    backgroundColor: "rgba(0,255,136,0.05)",
+                  }}
+                >
+                  <p
+                    style={{
+                      fontFamily: monoFont,
+                      fontSize: "0.65rem",
+                      color: "var(--terminal-green)",
+                      fontWeight: 700,
+                      letterSpacing: "0.06em",
+                      opacity: 0.8,
+                    }}
+                  >
+                    // Valid JSON
+                  </p>
+                </div>
+                <pre
+                  style={{
+                    margin: 0,
+                    padding: "12px 14px",
+                    fontFamily: monoFont,
+                    fontSize: "0.72rem",
+                    lineHeight: "1.9",
+                    color: "var(--terminal-green)",
+                    opacity: 0.75,
+                    whiteSpace: "pre-wrap",
+                  }}
+                >
+                  {`{
+  "key": "value",
+  "trailing": true,
+  "num": 1
+}`}
+                </pre>
+              </div>
+            </div>
+
+            <h2
+              style={{
+                fontFamily: monoFont,
+                fontSize: "1.1rem",
+                fontWeight: 700,
+                color: "var(--terminal-green)",
+                marginBottom: "16px",
+                letterSpacing: "-0.01em",
+              }}
+            >
+              JSON vs XML vs YAML
+            </h2>
+            <div
+              style={{
+                border: "1px solid rgba(88,166,255,0.12)",
+                borderRadius: "6px",
+                backgroundColor: "rgba(88,166,255,0.02)",
+                overflow: "hidden",
+                marginBottom: "28px",
+                maxWidth: "720px",
+              }}
+            >
+              {[
+                { fmt: "JSON",  pro: "Universal support, fast parsing, compact",           con: "No comments, strict syntax, no multiline strings" },
+                { fmt: "XML",   pro: "Namespaces, schemas (XSD), attributes, comments",     con: "Verbose, complex parsing, heavyweight for APIs" },
+                { fmt: "YAML",  pro: "Human-readable, supports comments and multiline",     con: "Indentation-sensitive, parsing quirks, not for APIs" },
+              ].map(({ fmt, pro, con }, i) => (
+                <div
+                  key={fmt}
+                  style={{
+                    display: "grid",
+                    gridTemplateColumns: "60px 1fr 1fr",
+                    gap: "12px",
+                    padding: "10px 16px",
+                    borderBottom: i < 2 ? "1px solid rgba(88,166,255,0.06)" : undefined,
+                    alignItems: "flex-start",
+                  }}
+                >
+                  <p
+                    style={{
+                      fontFamily: monoFont,
+                      fontSize: "0.78rem",
+                      fontWeight: 700,
+                      color: "rgba(255,255,255,0.6)",
+                    }}
+                  >
+                    {fmt}
+                  </p>
+                  <p
+                    style={{
+                      fontFamily: monoFont,
+                      fontSize: "0.72rem",
+                      color: "var(--terminal-green)",
+                      opacity: 0.7,
+                      lineHeight: 1.6,
+                    }}
+                  >
+                    + {pro}
+                  </p>
+                  <p
+                    style={{
+                      fontFamily: monoFont,
+                      fontSize: "0.72rem",
+                      color: "rgba(255,100,100,0.6)",
+                      lineHeight: 1.6,
+                    }}
+                  >
+                    - {con}
+                  </p>
+                </div>
+              ))}
+            </div>
+
+            <h2
+              style={{
+                fontFamily: monoFont,
+                fontSize: "1.1rem",
+                fontWeight: 700,
+                color: "var(--terminal-green)",
+                marginBottom: "16px",
+                letterSpacing: "-0.01em",
+              }}
+            >
+              Key Features of This Tool
+            </h2>
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))",
+                gap: "12px",
+                maxWidth: "720px",
+              }}
+            >
+              {[
+                { label: "Format", desc: "Beautify JSON with 2-space indentation and syntax highlighting" },
+                { label: "Minify", desc: "Strip all whitespace for the smallest possible payload size" },
+                { label: "Validate", desc: "Detect and report exact syntax errors with line/column numbers" },
+                { label: "Auto-fix", desc: "Repair trailing commas, single quotes, and other common mistakes" },
+                { label: "Tree View", desc: "Explore deeply nested structures with expand/collapse and path copy" },
+                { label: "Diff View", desc: "Compare two JSON documents side-by-side with highlighted changes" },
+              ].map(({ label, desc }) => (
+                <div
+                  key={label}
+                  style={{
+                    padding: "12px 14px",
+                    border: "1px solid rgba(0,255,136,0.08)",
+                    borderRadius: "6px",
+                    backgroundColor: "rgba(0,255,136,0.02)",
+                  }}
+                >
+                  <p
+                    style={{
+                      fontFamily: monoFont,
+                      fontSize: "0.78rem",
+                      fontWeight: 700,
+                      color: "rgba(255,255,255,0.65)",
+                      marginBottom: "4px",
+                    }}
+                  >
+                    {label}
+                  </p>
+                  <p
+                    style={{
+                      fontFamily: monoFont,
+                      fontSize: "0.72rem",
+                      color: "var(--comment-gray)",
+                      opacity: 0.7,
+                    }}
+                  >
+                    {desc}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
 
         {/* Sidebar */}

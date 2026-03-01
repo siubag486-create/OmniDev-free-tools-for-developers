@@ -738,47 +738,6 @@ export default function TerminalHero() {
                   <span style={{ fontSize: "0.72rem", opacity: 0.6, letterSpacing: "0.04em" }}>Decoder &amp; Verifier</span>
                 </a>
 
-                {/* Coming soon tools */}
-                {[
-                  "UUID Generator",
-                  "Cron Builder",
-                  "Hash Generator",
-                ].map((tool) => (
-                  <div
-                    key={tool}
-                    style={{
-                      fontFamily: "var(--font-geist-mono), monospace",
-                      fontSize: "0.82rem",
-                      padding: "14px 0",
-                      borderRadius: "8px",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      gap: "8px",
-                      border: "1px solid var(--terminal-border)",
-                      backgroundColor: "rgba(255,255,255,0.02)",
-                      color: "var(--code-comment)",
-                      cursor: "default",
-                      letterSpacing: "0.03em",
-                    }}
-                  >
-                    <span style={{ opacity: 0.4, fontSize: "0.68rem" }}>$</span>
-                    {tool}
-                    <span
-                      style={{
-                        fontSize: "0.58rem",
-                        padding: "2px 6px",
-                        borderRadius: "3px",
-                        border: "1px solid rgba(110,118,129,0.25)",
-                        color: "var(--code-comment)",
-                        opacity: 0.5,
-                        letterSpacing: "0.05em",
-                      }}
-                    >
-                      soon
-                    </span>
-                  </div>
-                ))}
               </div>
             </div>
           )}
