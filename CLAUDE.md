@@ -90,9 +90,9 @@ Always dark — no light mode toggle.
 - `/tools/regex-tester` — Regex Tester (완료)
 - `/tools/text-diff` — Text Diff Tool (완료)
 - `/tools/base64` — Base64 Encoder/Decoder (완료)
-- `/tools/jwt-decoder` — JWT Inspector (완료)
-- `/tools/uuid-generator` — UUID Generator (개발예정 1순위)
-- `/tools/hash-generator` — Hash Generator (개발예정 2순위)
+- `/tools/jwt-decoder` — JWT Decoder (완료)
+- `/tools/uuid-generator` — UUID Generator (완료)
+- `/tools/hash-generator` — Hash Generator (개발예정 1순위)
 
 ## Tools Roadmap
 
@@ -102,26 +102,30 @@ Always dark — no light mode toggle.
 - **Regex Tester** (`/tools/regex-tester`) — 실시간 매칭 하이라이트, 플래그 토글, 캡처 그룹 표시, ₩→\\ 자동변환
 - **Text Diff** (`/tools/text-diff`) — Split/Unified view, 라인별 diff, 공백 무시 옵션, 괄호 그룹 단위 인라인 diff (paren-aware tokenizer + diffArrays), Unified view 전체 추가/삭제 줄 mark 하이라이트
 - **Base64** (`/tools/base64`) — Text/URL Safe/Image 3탭, 브라우저 내장 btoa/atob 사용 (외부 패키지 없음)
-- **JWT Inspector** (`/tools/jwt-decoder`) — Header/Payload/Signature 분리, exp 라이브 카운트다운, alg:none 보안 경고, HS256/384/512 HMAC 검증 + RS256/384/512·PS256/384/512·ES256/384/512 비대칭 PEM 공개키 검증 (Web Crypto API, 외부 라이브러리 없음)
+- **JWT Decoder** (`/tools/jwt-decoder`) — Header/Payload/Signature 분리, exp 라이브 카운트다운, alg:none 보안 경고, HS256/384/512 HMAC 검증 + RS256/384/512·PS256/384/512·ES256/384/512 비대칭 PEM 공개키 검증 (Web Crypto API, 외부 라이브러리 없음)
+- **UUID Generator** (`/tools/uuid-generator`) — v1(time)/v4(random)/v7(sortable) 지원, 개수 선택(1/5/10/20/50), lowercase/UPPERCASE, 하이픈 on/off, 개별 Copy + Copy All (crypto.randomUUID, 외부 라이브러리 없음)
 
 AdSense 심사 대응 완료 (2026-03-01):
 
 - `/about`, `/contact`, `/privacy-policy`, `/terms` 페이지 추가
 - `components/layout/footer.tsx` 추가 (app/layout.tsx에 포함)
-- 각 도구 페이지 하단에 교육용 설명 섹션 추가
+- 각 도구 페이지 하단에 교육용 설명 섹션 추가 (prose 문단 + 표/카드)
 - `public/ads.txt` 생성 (publisher ID 교체 필요)
+
+브랜드명 변경 완료: CodeBridge → **OmniDev** (전체 파일 일괄 적용)
 
 ## Components
 
 - `components/hero/terminal-hero.tsx` — **Client**, typewriter animation + tool CTA buttons
-- `components/layout/navbar.tsx` — Fixed top navbar (server)
+- `components/layout/navbar.tsx` — Fixed top navbar (server), About/Contact/Privacy/Terms 링크 표시
 - `components/layout/footer.tsx` — **Client**, site-wide footer (About/Contact/Privacy/Terms 링크, © 2026 PSWK DEV)
 - `components/layout/tool-nav-sidebar.tsx` — Tool navigation sidebar (server)
 - `components/tools/json-formatter/json-formatter-client.tsx` — **Client**, JSON formatter (jsonrepair)
 - `components/tools/regex-tester/regex-tester-client.tsx` — **Client**, Regex tester
 - `components/tools/text-diff/text-diff-client.tsx` — **Client**, Text diff (diffLines + diffArrays, paren-aware 인라인 diff)
 - `components/tools/base64/base64-client.tsx` — **Client**, Base64 encoder/decoder (Text, URL Safe, Image 3탭)
-- `components/tools/jwt-decoder/jwt-decoder-client.tsx` — **Client**, JWT Inspector (Header/Payload/Signature 카드, 실시간 exp 카운트다운, alg:none 보안 경고, HMAC + 비대칭 PEM 서명 검증)
+- `components/tools/jwt-decoder/jwt-decoder-client.tsx` — **Client**, JWT Decoder (Header/Payload/Signature 카드, 실시간 exp 카운트다운, alg:none 보안 경고, HMAC + 비대칭 PEM 서명 검증)
+- `components/tools/uuid-generator/uuid-generator-client.tsx` — **Client**, UUID Generator (v1/v4/v7, 개수/포맷/하이픈 옵션, Copy All)
 - `components/ui/` — shadcn components (none installed yet; add via `pnpm dlx shadcn@latest add <name>`)
 
 ## Key Dependencies
