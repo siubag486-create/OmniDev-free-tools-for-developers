@@ -60,7 +60,7 @@ Always dark — no light mode toggle.
 
 **CRT Terminal Theme:**
 
-- `--terminal-bg: #0a0e1a` — page background
+- `--terminal-bg: #0a0a0a` — page background
 - `--terminal-green: #00ff88` — primary accent
 - `--electric-blue: #58a6ff` — secondary accent
 - `--comment-gray: #6e7681` — muted text

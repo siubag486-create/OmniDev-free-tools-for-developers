@@ -120,8 +120,8 @@ export default function RegexTesterPage() {
                 backgroundColor: "rgba(88,166,255,0.03)",
                 overflow: "hidden",
                 flexShrink: 0,
-                minWidth: "220px",
-                maxWidth: "280px",
+                minWidth: "300px",
+                maxWidth: "400px",
               }}
             >
               <div
@@ -142,7 +142,7 @@ export default function RegexTesterPage() {
               <pre
                 style={{
                   margin: 0,
-                  padding: "10px 14px",
+                  padding: "12px 20px",
                   fontFamily: monoFont,
                   fontSize: "0.7rem",
                   lineHeight: "1.85",

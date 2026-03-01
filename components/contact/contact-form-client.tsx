@@ -47,6 +47,14 @@ export default function ContactFormClient() {
     }
   };
 
+  const handleReset = () => {
+    setEmail("");
+    setType("feature_request");
+    setMessage("");
+    setError(null);
+    setSubmitted(false);
+  };
+
   if (submitted) {
     return (
       <div
@@ -68,7 +76,7 @@ export default function ContactFormClient() {
           <span style={{ color: "var(--terminal-green)" }}>$</span>{" "}
           ./send_message --exec
         </p>
-        <div style={{ lineHeight: 2 }}>
+        <div style={{ lineHeight: 2, marginBottom: "20px" }}>
           <p style={{ fontSize: "0.78rem", color: "var(--comment-gray)" }}>
             &gt; Connecting...
           </p>
@@ -86,6 +94,36 @@ export default function ContactFormClient() {
             # Reply will be sent to{" "}
             <span style={{ color: "var(--electric-blue)" }}>{email}</span>
           </p>
+        </div>
+        <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+          <span style={{ fontSize: "0.72rem", color: "var(--comment-gray)", opacity: 0.4 }}>
+            $
+          </span>
+          <button
+            onClick={handleReset}
+            style={{
+              fontFamily: monoFont,
+              fontSize: "0.75rem",
+              color: "var(--comment-gray)",
+              backgroundColor: "transparent",
+              border: "1px solid rgba(255,255,255,0.1)",
+              borderRadius: "3px",
+              padding: "5px 14px",
+              cursor: "pointer",
+              letterSpacing: "0.03em",
+              transition: "all 0.15s",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.borderColor = "rgba(0,255,136,0.3)";
+              e.currentTarget.style.color = "var(--terminal-green)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.borderColor = "rgba(255,255,255,0.1)";
+              e.currentTarget.style.color = "var(--comment-gray)";
+            }}
+          >
+            ./send_message --new
+          </button>
         </div>
       </div>
     );
