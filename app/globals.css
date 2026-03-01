@@ -326,3 +326,8 @@
   background: transparent !important;
   padding: 0 !important;
 }
+
+/* Terminal form input placeholder */
+.terminal-input::placeholder {
+  color: rgba(110, 118, 129, 0.35);
+}

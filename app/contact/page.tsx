@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import ContactFormClient from "@/components/contact/contact-form-client";
 
 export const metadata: Metadata = {
   title: "Contact — OmniDev",
@@ -135,6 +136,67 @@ export default function ContactPage() {
           >
             We aim to respond within 2–3 business days.
           </p>
+        </div>
+
+        {/* OR Divider */}
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "14px",
+            margin: "36px 0 28px",
+          }}
+        >
+          <div
+            style={{
+              flex: 1,
+              height: "1px",
+              background: "rgba(0,255,136,0.08)",
+            }}
+          />
+          <div
+            style={{
+              fontFamily: monoFont,
+              fontSize: "0.78rem",
+              color: "var(--comment-gray)",
+              opacity: 0.35,
+              letterSpacing: "0.2em",
+              border: "1px solid rgba(0,255,136,0.1)",
+              padding: "3px 10px",
+              borderRadius: "3px",
+            }}
+          >
+            OR
+          </div>
+          <div
+            style={{
+              flex: 1,
+              height: "1px",
+              background: "rgba(0,255,136,0.08)",
+            }}
+          />
+        </div>
+
+        {/* Form section label */}
+        <p
+          style={{
+            fontFamily: monoFont,
+            fontSize: "0.7rem",
+            color: "var(--comment-gray)",
+            opacity: 0.45,
+            marginBottom: "16px",
+            letterSpacing: "0.03em",
+          }}
+        >
+          <span style={{ color: "var(--terminal-green)", opacity: 0.6 }}>
+            ~/
+          </span>{" "}
+          send via form
+        </p>
+
+        {/* Contact Form */}
+        <div style={{ marginBottom: "40px" }}>
+          <ContactFormClient />
         </div>
 
         {/* What to include */}
