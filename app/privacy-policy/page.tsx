@@ -139,7 +139,8 @@ export default function PrivacyPolicyPage() {
           </p>
           <p style={{ marginBottom: "10px" }}>
             All tools on OmniDev (JSON Formatter, Regex Tester, Text Diff,
-            Base64, JWT Decoder) run{" "}
+            Base64, JWT Decoder, UUID Generator, Hash Generator, YAML ↔ JSON
+            Converter, URL Encoder/Decoder) run{" "}
             <strong style={{ color: "rgba(255,255,255,0.7)" }}>
               entirely in your browser
             </strong>
@@ -258,7 +259,7 @@ export default function PrivacyPolicyPage() {
               href="/contact"
               style={{ color: "var(--electric-blue)" }}
             >
-              omnidev.contact@gmail.com
+              omnidevtool@gmail.com
             </a>
           </p>
         </Section>

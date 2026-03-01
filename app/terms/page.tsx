@@ -221,7 +221,7 @@ export default function TermsPage() {
               href="/contact"
               style={{ color: "var(--electric-blue)" }}
             >
-              omnidev.contact@gmail.com
+              omnidevtool@gmail.com
             </a>
             .
           </p>

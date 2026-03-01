@@ -112,7 +112,7 @@ export default function ContactPage() {
             // Email
           </p>
           <a
-            href="mailto:siubag486@gmail.com"
+            href="mailto:omnidevtool@gmail.com"
             style={{
               fontFamily: monoFont,
               fontSize: "1rem",
@@ -121,7 +121,7 @@ export default function ContactPage() {
               letterSpacing: "-0.01em",
             }}
           >
-            siubag486@gmail.com
+            omnidevtool@gmail.com
           </a>
           <p
             style={{

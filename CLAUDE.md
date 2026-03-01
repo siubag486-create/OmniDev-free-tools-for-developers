@@ -42,14 +42,14 @@ This is a **Next.js 16 App Router** project using:
 
 - **Path aliases**: `@/components`, `@/components/ui`, `@/lib`, `@/hooks` (configured in `tsconfig.json` and `components.json`)
 - **`cn()` utility**: Use `lib/utils.ts` `cn()` (clsx + tailwind-merge) for conditional class names
-- **CSS variables**: All design tokens (colors, radius, sidebar, chart) are defined as CSS custom properties in `app/globals.css` with light/dark variants using oklch color space
-- **Dark mode**: Class-based dark mode via `.dark` class (custom variant defined in `globals.css`)
-- **Fonts**: Geist Sans (`--font-geist-sans`) and Geist Mono (`--font-geist-mono`) loaded via `next/font/google`
+- **CSS variables**: All design tokens defined as CSS custom properties in `app/globals.css` with oklch color space
+- **Dark mode**: Class-based via `.dark` class (`@custom-variant dark` in `globals.css`)
+- **Fonts**: Geist Sans (`--font-geist-sans`), Geist Mono (`--font-geist-mono`), Space Mono (`--font-space-mono`) via `next/font/google`
 
 ### Structure
 
 - `app/` — Next.js App Router pages and layouts
-- `app/globals.css` — Global styles, Tailwind imports, and all CSS variable tokens
+- `app/globals.css` — Global styles, Tailwind imports, CSS variable tokens
 - `lib/utils.ts` — `cn()` helper
 - `components/ui/` — shadcn/ui generated components (added via CLI)
 - `components/` — Custom application components
@@ -77,72 +77,69 @@ Always dark — no light mode toggle.
 ## Typography
 
 - **DungGeunMo** — Korean pixel font, loaded via CDN in `app/layout.tsx`, applied to `body`
-- **Geist Sans** (`--font-geist-sans`), **Geist Mono** (`--font-geist-mono`), **Space Mono** (`--font-space-mono`) — via `next/font/google`
+- **Geist Sans / Geist Mono / Space Mono** — via `next/font/google`
 
 ## Routes
 
-- `/` — Homepage with `TerminalHero` + features section
-- `/about` — About page (PSWK DEV 팀 소개, 미션)
-- `/contact` — Contact page (이메일 + 버그 리포트 가이드)
-- `/privacy-policy` — Privacy Policy (AdSense 필수)
+완료:
+- `/` — Homepage (`TerminalHero` + 9-tool grid, soon 버튼 없음)
+- `/about` — About page
+- `/contact` — Contact page
+- `/privacy-policy` — Privacy Policy
 - `/terms` — Terms of Service
-- `/tools/json-formatter` — JSON Formatter & Validator (완료)
-- `/tools/regex-tester` — Regex Tester (완료)
-- `/tools/text-diff` — Text Diff Tool (완료)
-- `/tools/base64` — Base64 Encoder/Decoder (완료)
-- `/tools/jwt-decoder` — JWT Decoder (완료)
-- `/tools/uuid-generator` — UUID Generator (완료)
-- `/tools/hash-generator` — Hash Generator (개발예정 1순위)
-- `/tools/url-encoder` — URL Encoder/Decoder (개발예정 2순위)
-- `/tools/timestamp-converter` — Timestamp Converter (개발예정 3순위)
-- `/tools/json-yaml` — JSON ↔ YAML Converter (개발예정 4순위)
-- `/tools/cron-parser` — Cron Expression Parser (개발예정 5순위)
+- `/tools/json-formatter` — JSON Formatter & Validator
+- `/tools/regex-tester` — Regex Tester
+- `/tools/text-diff` — Text Diff Tool
+- `/tools/base64` — Base64 Encoder/Decoder
+- `/tools/jwt-decoder` — JWT Decoder
+- `/tools/uuid-generator` — UUID Generator
+- `/tools/hash-generator` — Hash Generator
+- `/tools/yaml-to-json` — YAML ↔ JSON Converter
+- `/tools/url-encoder` — URL Encoder/Decoder
+
+개발 예정:
+- `/tools/timestamp-converter` — Timestamp Converter
+- `/tools/cron-parser` — Cron Expression Parser
 
 ## Tools Roadmap
 
-개발 완료:
+개발 완료 (9개):
 
-- **JSON Formatter** (`/tools/json-formatter`) — 포맷/검증/Auto-fix/Minify, Tree view (expand/collapse, path copy, search), Diff view
-- **Regex Tester** (`/tools/regex-tester`) — 실시간 매칭 하이라이트, 플래그 토글, 캡처 그룹 표시, ₩→\\ 자동변환
-- **Text Diff** (`/tools/text-diff`) — Split/Unified view, 라인별 diff, 공백 무시 옵션, 괄호 그룹 단위 인라인 diff (paren-aware tokenizer + diffArrays), Unified view 전체 추가/삭제 줄 mark 하이라이트
-- **Base64** (`/tools/base64`) — Text/URL Safe/Image 3탭, 브라우저 내장 btoa/atob 사용 (외부 패키지 없음)
-- **JWT Decoder** (`/tools/jwt-decoder`) — Header/Payload/Signature 분리, exp 라이브 카운트다운, alg:none 보안 경고, HS256/384/512 HMAC 검증 + RS256/384/512·PS256/384/512·ES256/384/512 비대칭 PEM 공개키 검증 (Web Crypto API, 외부 라이브러리 없음)
-- **UUID Generator** (`/tools/uuid-generator`) — v1(time)/v4(random)/v7(sortable) 지원, 개수 선택(1/5/10/20/50), lowercase/UPPERCASE, 하이픈 on/off, 개별 Copy + Copy All (crypto.randomUUID, 외부 라이브러리 없음)
+- **JSON Formatter** — 포맷/검증/Auto-fix/Minify, Tree view, Diff view
+- **Regex Tester** — 실시간 매칭 하이라이트, 플래그 토글, 캡처 그룹, ₩→\\ 자동변환
+- **Text Diff** — Split/Unified view, 공백 무시, paren-aware 인라인 diff
+- **Base64** — Text/URL Safe/Image 3탭, btoa/atob (외부 패키지 없음)
+- **JWT Decoder** — Header/Payload/Signature, exp 카운트다운, alg:none 경고, HMAC + PEM 비대칭 검증 (Web Crypto API)
+- **UUID Generator** — v1/v4/v7, 개수/포맷/하이픈 옵션, Copy All (crypto.randomUUID)
+- **Hash Generator** — MD5/SHA-1/SHA-256/SHA-384/SHA-512, HMAC, 파일 해시 지원
+- **YAML ↔ JSON Converter** — 양방향 변환, 구문 강조, 파일 업로드/다운로드
+- **URL Encoder/Decoder** — encodeURIComponent 기반 인코딩/디코딩, Query String Parser 탭 (key/value 테이블, 개별 Copy)
 
 개발 예정:
 
-- **Hash Generator** (`/tools/hash-generator`) — MD5/SHA-1/SHA-256/SHA-512 해시 생성, 파일 해시 지원 (1순위)
-- **URL Encoder/Decoder** (`/tools/url-encoder`) — URL 인코딩/디코딩, Query String 파싱 (2순위)
-- **Timestamp Converter** (`/tools/timestamp-converter`) — Unix timestamp ↔ 날짜/시간 변환, 타임존 지원 (3순위)
-- **JSON ↔ YAML Converter** (`/tools/json-yaml`) — JSON/YAML 상호 변환, 포맷 검증 (4순위)
-- **Cron Expression Parser** (`/tools/cron-parser`) — Cron 표현식 파싱, 다음 실행 시간 미리보기 (5순위)
-
-AdSense 심사 대응 완료 (2026-03-01):
-
-- `/about`, `/contact`, `/privacy-policy`, `/terms` 페이지 추가
-- `components/layout/footer.tsx` 추가 (app/layout.tsx에 포함)
-- 각 도구 페이지 하단에 교육용 설명 섹션 추가 (prose 문단 + 표/카드)
-- `public/ads.txt` 생성 (publisher ID 교체 필요)
-
-브랜드명 변경 완료: CodeBridge → **OmniDev** (전체 파일 일괄 적용)
+- **Timestamp Converter** — Unix timestamp ↔ 날짜/시간, 타임존 지원
+- **Cron Expression Parser** — Cron 파싱, 다음 실행 시간 미리보기
 
 ## Components
 
-- `components/hero/terminal-hero.tsx` — **Client**, typewriter animation + tool CTA buttons
-- `components/layout/navbar.tsx` — Fixed top navbar (server), About/Contact/Privacy/Terms 링크 표시
-- `components/layout/footer.tsx` — **Client**, site-wide footer (About/Contact/Privacy/Terms 링크, © 2026 PSWK DEV)
-- `components/layout/tool-nav-sidebar.tsx` — Tool navigation sidebar (server)
-- `components/tools/json-formatter/json-formatter-client.tsx` — **Client**, JSON formatter (jsonrepair)
-- `components/tools/regex-tester/regex-tester-client.tsx` — **Client**, Regex tester
-- `components/tools/text-diff/text-diff-client.tsx` — **Client**, Text diff (diffLines + diffArrays, paren-aware 인라인 diff)
-- `components/tools/base64/base64-client.tsx` — **Client**, Base64 encoder/decoder (Text, URL Safe, Image 3탭)
-- `components/tools/jwt-decoder/jwt-decoder-client.tsx` — **Client**, JWT Decoder (Header/Payload/Signature 카드, 실시간 exp 카운트다운, alg:none 보안 경고, HMAC + 비대칭 PEM 서명 검증)
-- `components/tools/uuid-generator/uuid-generator-client.tsx` — **Client**, UUID Generator (v1/v4/v7, 개수/포맷/하이픈 옵션, Copy All)
-- `components/ui/` — shadcn components (none installed yet; add via `pnpm dlx shadcn@latest add <name>`)
+- `components/hero/terminal-hero.tsx` — **Client**, typewriter animation + 9-tool CTA grid (soon 없음)
+- `components/layout/navbar.tsx` — Fixed top navbar (server)
+- `components/layout/footer.tsx` — **Client**, site-wide footer
+- `components/layout/tool-nav-sidebar.tsx` — Tool navigation sidebar (server), 9개 도구 링크
+- `components/tools/json-formatter/json-formatter-client.tsx` — **Client** (jsonrepair)
+- `components/tools/regex-tester/regex-tester-client.tsx` — **Client**
+- `components/tools/text-diff/text-diff-client.tsx` — **Client** (diff 라이브러리)
+- `components/tools/base64/base64-client.tsx` — **Client**
+- `components/tools/jwt-decoder/jwt-decoder-client.tsx` — **Client**
+- `components/tools/uuid-generator/uuid-generator-client.tsx` — **Client**
+- `components/tools/hash-generator/hash-generator-client.tsx` — **Client**
+- `components/tools/yaml-to-json/yaml-to-json-client.tsx` — **Client**
+- `components/tools/url-encoder/url-encoder-client.tsx` — **Client**
+- `components/ui/` — shadcn components
 
 ## Key Dependencies
 
-- `jsonrepair` — JSON Auto-fix 기능
+- `jsonrepair` — JSON Auto-fix
 - `diff` — Text Diff 연산
 - `highlight.js` — 코드 하이라이팅
 - `lucide-react` — 아이콘
