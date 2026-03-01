@@ -715,6 +715,12 @@ export default function TerminalHero() {
                       href: "/tools/hash-generator",
                     },
                     {
+                      icon: "YML",
+                      cmd: "yaml-to-json",
+                      desc: "YAML ↔ JSON converter",
+                      href: "/tools/yaml-to-json",
+                    },
+                    {
                       icon: "URL",
                       cmd: "url-encoder",
                       desc: "URL encode / decode",
@@ -747,7 +753,7 @@ export default function TerminalHero() {
                             ? "1px solid rgba(0,255,136,0.06)"
                             : "none",
                         borderBottom:
-                          i < 6
+                          i < 9
                             ? "1px solid rgba(0,255,136,0.06)"
                             : "none",
                       }}

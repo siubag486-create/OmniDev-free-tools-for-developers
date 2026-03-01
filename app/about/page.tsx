@@ -178,6 +178,10 @@ export default function AboutPage() {
                 name: "Hash Generator",
                 desc: "MD5, SHA-1, SHA-256, SHA-384, SHA-512 hashing with HMAC and file support",
               },
+              {
+                name: "YAML to JSON Converter",
+                desc: "Convert YAML ↔ JSON instantly with syntax highlighting, file upload, and download",
+              },
             ].map(({ name, desc }) => (
               <div
                 key={name}
@@ -241,10 +245,6 @@ export default function AboutPage() {
               {
                 name: "Timestamp Converter",
                 desc: "Convert Unix timestamps to human-readable dates with timezone support",
-              },
-              {
-                name: "JSON ↔ YAML Converter",
-                desc: "Seamlessly convert between JSON and YAML formats",
               },
               {
                 name: "Cron Expression Parser",
