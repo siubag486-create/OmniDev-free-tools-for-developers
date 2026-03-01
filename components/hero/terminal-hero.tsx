@@ -723,37 +723,26 @@ export default function TerminalHero() {
                     {
                       icon: "URL",
                       cmd: "url-encoder",
-                      desc: "URL encode / decode",
-                      href: null,
-                      soon: true,
-                    },
-                    {
-                      icon: " ts",
-                      cmd: "timestamp-converter",
-                      desc: "Unix timestamp converter",
-                      href: null,
-                      soon: true,
+                      desc: "URL encode / decode & query parser",
+                      href: "/tools/url-encoder",
                     },
                   ].map((tool, i) => (
                     <a
                       key={tool.cmd}
-                      href={tool.href ?? "#"}
-                      className={tool.soon ? undefined : "tool-btn"}
-                      onClick={tool.soon ? (e) => e.preventDefault() : undefined}
+                      href={tool.href}
+                      className="tool-btn"
                       style={{
                         display: "flex",
                         flexDirection: "column",
                         padding: "16px 18px",
                         textDecoration: "none",
                         gap: "8px",
-                        opacity: tool.soon ? 0.38 : 1,
-                        cursor: tool.soon ? "default" : "pointer",
                         borderRight:
                           i % 3 !== 2
                             ? "1px solid rgba(0,255,136,0.06)"
                             : "none",
                         borderBottom:
-                          i < 9
+                          i < 6
                             ? "1px solid rgba(0,255,136,0.06)"
                             : "none",
                       }}
@@ -798,32 +787,16 @@ export default function TerminalHero() {
                         >
                           {tool.cmd}
                         </span>
-                        {tool.soon ? (
-                          <span
-                            style={{
-                              fontSize: "0.6rem",
-                              color: "rgba(88,166,255,0.5)",
-                              border: "1px solid rgba(88,166,255,0.2)",
-                              borderRadius: "3px",
-                              padding: "1px 5px",
-                              flexShrink: 0,
-                              fontFamily: "var(--font-geist-mono), monospace",
-                            }}
-                          >
-                            soon
-                          </span>
-                        ) : (
-                          <span
-                            className="tool-arrow"
-                            style={{
-                              color: "rgba(0,255,136,0.25)",
-                              fontSize: "0.85rem",
-                              flexShrink: 0,
-                            }}
-                          >
-                            →
-                          </span>
-                        )}
+                        <span
+                          className="tool-arrow"
+                          style={{
+                            color: "rgba(0,255,136,0.25)",
+                            fontSize: "0.85rem",
+                            flexShrink: 0,
+                          }}
+                        >
+                          →
+                        </span>
                       </div>
 
                       {/* Description */}

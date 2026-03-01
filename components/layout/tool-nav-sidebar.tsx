@@ -10,6 +10,7 @@ const tools = [
   { id: "jwt-decoder",    label: "jwt-decoder",     desc: "Token Decoder" },
   { id: "uuid-generator",   label: "uuid-generator",   desc: "ID Generator"    },
   { id: "hash-generator",   label: "hash-generator",   desc: "Hash & Checksum" },
+  { id: "url-encoder",      label: "url-encoder",      desc: "Encode / Decode"  },
   { id: "yaml-to-json",     label: "yaml-to-json",     desc: "YAML ↔ JSON"      },
 ];
 
