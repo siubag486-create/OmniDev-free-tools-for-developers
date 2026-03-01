@@ -174,6 +174,10 @@ export default function AboutPage() {
                 name: "UUID Generator",
                 desc: "Generate UUID v4 and v1 identifiers in bulk with format options",
               },
+              {
+                name: "Hash Generator",
+                desc: "MD5, SHA-1, SHA-256, SHA-384, SHA-512 hashing with HMAC and file support",
+              },
             ].map(({ name, desc }) => (
               <div
                 key={name}
@@ -204,6 +208,98 @@ export default function AboutPage() {
                 >
                   {desc}
                 </p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* Coming Soon */}
+        <section style={{ marginBottom: "40px" }}>
+          <h2
+            style={{
+              fontFamily: monoFont,
+              fontSize: "1rem",
+              fontWeight: 700,
+              color: "var(--terminal-green)",
+              marginBottom: "14px",
+            }}
+          >
+            Coming Soon
+          </h2>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: "8px",
+            }}
+          >
+            {[
+              {
+                name: "URL Encoder / Decoder",
+                desc: "Encode and decode URLs with query string parsing",
+              },
+              {
+                name: "Timestamp Converter",
+                desc: "Convert Unix timestamps to human-readable dates with timezone support",
+              },
+              {
+                name: "JSON ↔ YAML Converter",
+                desc: "Seamlessly convert between JSON and YAML formats",
+              },
+              {
+                name: "Cron Expression Parser",
+                desc: "Parse cron expressions and preview upcoming execution times",
+              },
+            ].map(({ name, desc }) => (
+              <div
+                key={name}
+                style={{
+                  padding: "12px 16px",
+                  border: "1px solid rgba(88,166,255,0.1)",
+                  borderRadius: "6px",
+                  backgroundColor: "rgba(88,166,255,0.02)",
+                  display: "flex",
+                  alignItems: "flex-start",
+                  gap: "12px",
+                }}
+              >
+                <span
+                  style={{
+                    fontFamily: monoFont,
+                    fontSize: "0.68rem",
+                    color: "var(--electric-blue)",
+                    opacity: 0.6,
+                    letterSpacing: "0.05em",
+                    textTransform: "uppercase",
+                    paddingTop: "2px",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  soon
+                </span>
+                <div>
+                  <p
+                    style={{
+                      fontFamily: monoFont,
+                      fontSize: "0.82rem",
+                      fontWeight: 700,
+                      color: "rgba(255,255,255,0.5)",
+                      marginBottom: "3px",
+                    }}
+                  >
+                    {name}
+                  </p>
+                  <p
+                    style={{
+                      fontFamily: monoFont,
+                      fontSize: "0.75rem",
+                      color: "var(--comment-gray)",
+                      opacity: 0.7,
+                    }}
+                  >
+                    {desc}
+                  </p>
+                </div>
               </div>
             ))}
           </div>

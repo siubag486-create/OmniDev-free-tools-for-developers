@@ -93,6 +93,10 @@ Always dark — no light mode toggle.
 - `/tools/jwt-decoder` — JWT Decoder (완료)
 - `/tools/uuid-generator` — UUID Generator (완료)
 - `/tools/hash-generator` — Hash Generator (개발예정 1순위)
+- `/tools/url-encoder` — URL Encoder/Decoder (개발예정 2순위)
+- `/tools/timestamp-converter` — Timestamp Converter (개발예정 3순위)
+- `/tools/json-yaml` — JSON ↔ YAML Converter (개발예정 4순위)
+- `/tools/cron-parser` — Cron Expression Parser (개발예정 5순위)
 
 ## Tools Roadmap
 
@@ -104,6 +108,14 @@ Always dark — no light mode toggle.
 - **Base64** (`/tools/base64`) — Text/URL Safe/Image 3탭, 브라우저 내장 btoa/atob 사용 (외부 패키지 없음)
 - **JWT Decoder** (`/tools/jwt-decoder`) — Header/Payload/Signature 분리, exp 라이브 카운트다운, alg:none 보안 경고, HS256/384/512 HMAC 검증 + RS256/384/512·PS256/384/512·ES256/384/512 비대칭 PEM 공개키 검증 (Web Crypto API, 외부 라이브러리 없음)
 - **UUID Generator** (`/tools/uuid-generator`) — v1(time)/v4(random)/v7(sortable) 지원, 개수 선택(1/5/10/20/50), lowercase/UPPERCASE, 하이픈 on/off, 개별 Copy + Copy All (crypto.randomUUID, 외부 라이브러리 없음)
+
+개발 예정:
+
+- **Hash Generator** (`/tools/hash-generator`) — MD5/SHA-1/SHA-256/SHA-512 해시 생성, 파일 해시 지원 (1순위)
+- **URL Encoder/Decoder** (`/tools/url-encoder`) — URL 인코딩/디코딩, Query String 파싱 (2순위)
+- **Timestamp Converter** (`/tools/timestamp-converter`) — Unix timestamp ↔ 날짜/시간 변환, 타임존 지원 (3순위)
+- **JSON ↔ YAML Converter** (`/tools/json-yaml`) — JSON/YAML 상호 변환, 포맷 검증 (4순위)
+- **Cron Expression Parser** (`/tools/cron-parser`) — Cron 표현식 파싱, 다음 실행 시간 미리보기 (5순위)
 
 AdSense 심사 대응 완료 (2026-03-01):
 

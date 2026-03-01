@@ -615,7 +615,7 @@ export default function TerminalHero() {
 
           {/* CTA below terminal */}
           {showCta && (
-            <div className="animate-fade-up mt-15 flex flex-col items-center gap-6">
+            <div className="animate-fade-up mt-15 flex flex-col items-center gap-6" style={{ width: "100%" }}>
               <p
                 style={{
                   fontFamily:
@@ -633,11 +633,10 @@ export default function TerminalHero() {
                 </span>
               </p>
 
-              {/* Tool list — terminal button style */}
+              {/* Tool grid — terminal card style */}
               <div
                 style={{
                   width: "100%",
-                  maxWidth: "600px",
                   backgroundColor: "rgba(10, 14, 26, 0.92)",
                   border: "1px solid rgba(0,255,136,0.18)",
                   borderRadius: "8px",
@@ -664,130 +663,177 @@ export default function TerminalHero() {
                   </span>
                   omnidev --list-tools
                 </div>
-                {[
-                  {
-                    icon: "{ }",
-                    cmd: "json-formatter",
-                    desc: "Format & validate JSON",
-                    href: "/tools/json-formatter",
-                  },
-                  {
-                    icon: "/^/",
-                    cmd: "regex-tester",
-                    desc: "Test regex patterns in realtime",
-                    href: "/tools/regex-tester",
-                  },
-                  {
-                    icon: "+/-",
-                    cmd: "text-diff",
-                    desc: "Compare two texts side-by-side",
-                    href: "/tools/text-diff",
-                  },
-                  {
-                    icon: " 64",
-                    cmd: "base64",
-                    desc: "Encode / decode Base64",
-                    href: "/tools/base64",
-                  },
-                  {
-                    icon: "JWT",
-                    cmd: "jwt-decoder",
-                    desc: "Decode & verify JWT tokens",
-                    href: "/tools/jwt-decoder",
-                  },
-                  {
-                    icon: "UID",
-                    cmd: "uuid-generator",
-                    desc: "Generate UUID v1 / v4 / v7 identifiers",
-                    href: "/tools/uuid-generator",
-                  },
-                ].map((tool, i, arr) => (
-                  <a
-                    key={tool.cmd}
-                    href={tool.href}
-                    className="tool-btn"
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      padding: "12px 16px",
-                      textDecoration: "none",
-                      gap: "12px",
-                      borderBottom:
-                        i < arr.length - 1
-                          ? "1px solid rgba(0,255,136,0.06)"
-                          : "none",
-                    }}
-                  >
-                    {/* Icon badge */}
-                    <span
-                      className="tool-icon"
-                      style={{
-                        display: "inline-flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        width: "36px",
-                        height: "26px",
-                        border: "1px solid rgba(0,255,136,0.28)",
-                        borderRadius: "4px",
-                        fontSize: "0.62rem",
-                        color: "var(--terminal-green)",
-                        flexShrink: 0,
-                        letterSpacing: "0",
-                        fontWeight: 600,
-                      }}
-                    >
-                      {tool.icon}
-                    </span>
 
-                    {/* $ prefix */}
-                    <span
+                {/* 3-column grid */}
+                <div
+                  style={{
+                    display: "grid",
+                    gridTemplateColumns: "repeat(3, 1fr)",
+                  }}
+                >
+                  {[
+                    {
+                      icon: "{ }",
+                      cmd: "json-formatter",
+                      desc: "Format & validate JSON",
+                      href: "/tools/json-formatter",
+                    },
+                    {
+                      icon: "/^/",
+                      cmd: "regex-tester",
+                      desc: "Test regex in realtime",
+                      href: "/tools/regex-tester",
+                    },
+                    {
+                      icon: "+/-",
+                      cmd: "text-diff",
+                      desc: "Compare texts side-by-side",
+                      href: "/tools/text-diff",
+                    },
+                    {
+                      icon: " 64",
+                      cmd: "base64",
+                      desc: "Encode / decode Base64",
+                      href: "/tools/base64",
+                    },
+                    {
+                      icon: "JWT",
+                      cmd: "jwt-decoder",
+                      desc: "Decode & verify JWT tokens",
+                      href: "/tools/jwt-decoder",
+                    },
+                    {
+                      icon: "UID",
+                      cmd: "uuid-generator",
+                      desc: "Generate UUID v1 / v4 / v7",
+                      href: "/tools/uuid-generator",
+                    },
+                    {
+                      icon: "###",
+                      cmd: "hash-generator",
+                      desc: "MD5 / SHA-256 / SHA-512 & HMAC",
+                      href: "/tools/hash-generator",
+                    },
+                    {
+                      icon: "URL",
+                      cmd: "url-encoder",
+                      desc: "URL encode / decode",
+                      href: null,
+                      soon: true,
+                    },
+                    {
+                      icon: " ts",
+                      cmd: "timestamp-converter",
+                      desc: "Unix timestamp converter",
+                      href: null,
+                      soon: true,
+                    },
+                  ].map((tool, i) => (
+                    <a
+                      key={tool.cmd}
+                      href={tool.href ?? "#"}
+                      className={tool.soon ? undefined : "tool-btn"}
+                      onClick={tool.soon ? (e) => e.preventDefault() : undefined}
                       style={{
-                        color: "rgba(0,255,136,0.35)",
-                        fontSize: "0.75rem",
-                        flexShrink: 0,
+                        display: "flex",
+                        flexDirection: "column",
+                        padding: "16px 18px",
+                        textDecoration: "none",
+                        gap: "8px",
+                        opacity: tool.soon ? 0.38 : 1,
+                        cursor: tool.soon ? "default" : "pointer",
+                        borderRight:
+                          i % 3 !== 2
+                            ? "1px solid rgba(0,255,136,0.06)"
+                            : "none",
+                        borderBottom:
+                          i < 6
+                            ? "1px solid rgba(0,255,136,0.06)"
+                            : "none",
                       }}
                     >
-                      $
-                    </span>
+                      {/* Top row: icon + cmd + arrow */}
+                      <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                        <span
+                          className="tool-icon"
+                          style={{
+                            display: "inline-flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            width: "34px",
+                            height: "24px",
+                            border: "1px solid rgba(0,255,136,0.28)",
+                            borderRadius: "4px",
+                            fontSize: "0.6rem",
+                            color: "var(--terminal-green)",
+                            flexShrink: 0,
+                            fontWeight: 600,
+                          }}
+                        >
+                          {tool.icon}
+                        </span>
+                        <span
+                          style={{
+                            color: "rgba(0,255,136,0.35)",
+                            fontSize: "0.72rem",
+                            flexShrink: 0,
+                          }}
+                        >
+                          $
+                        </span>
+                        <span
+                          className="tool-cmd"
+                          style={{
+                            color: "var(--terminal-green)",
+                            fontSize: "0.8rem",
+                            letterSpacing: "0.02em",
+                            flex: 1,
+                          }}
+                        >
+                          {tool.cmd}
+                        </span>
+                        {tool.soon ? (
+                          <span
+                            style={{
+                              fontSize: "0.6rem",
+                              color: "rgba(88,166,255,0.5)",
+                              border: "1px solid rgba(88,166,255,0.2)",
+                              borderRadius: "3px",
+                              padding: "1px 5px",
+                              flexShrink: 0,
+                              fontFamily: "var(--font-geist-mono), monospace",
+                            }}
+                          >
+                            soon
+                          </span>
+                        ) : (
+                          <span
+                            className="tool-arrow"
+                            style={{
+                              color: "rgba(0,255,136,0.25)",
+                              fontSize: "0.85rem",
+                              flexShrink: 0,
+                            }}
+                          >
+                            →
+                          </span>
+                        )}
+                      </div>
 
-                    {/* Command name */}
-                    <span
-                      className="tool-cmd"
-                      style={{
-                        color: "var(--terminal-green)",
-                        fontSize: "0.85rem",
-                        minWidth: "145px",
-                        letterSpacing: "0.02em",
-                      }}
-                    >
-                      {tool.cmd}
-                    </span>
-
-                    {/* Description */}
-                    <span
-                      className="tool-desc"
-                      style={{
-                        color: "var(--comment-gray)",
-                        fontSize: "0.78rem",
-                        flex: 1,
-                      }}
-                    >
-                      # {tool.desc}
-                    </span>
-
-                    {/* Arrow */}
-                    <span
-                      className="tool-arrow"
-                      style={{
-                        color: "rgba(0,255,136,0.25)",
-                        fontSize: "0.9rem",
-                        flexShrink: 0,
-                      }}
-                    >
-                      →
-                    </span>
-                  </a>
-                ))}
+                      {/* Description */}
+                      <span
+                        className="tool-desc"
+                        style={{
+                          color: "var(--comment-gray)",
+                          fontSize: "0.73rem",
+                          paddingLeft: "2px",
+                        }}
+                      >
+                        # {tool.desc}
+                      </span>
+                    </a>
+                  ))}
+                </div>
               </div>
             </div>
           )}

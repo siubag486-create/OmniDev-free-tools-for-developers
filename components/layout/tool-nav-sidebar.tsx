@@ -8,7 +8,8 @@ const tools = [
   { id: "text-diff",      label: "text-diff",       desc: "Compare Texts"   },
   { id: "base64",         label: "base64",           desc: "Encode / Decode" },
   { id: "jwt-decoder",    label: "jwt-decoder",     desc: "Token Decoder" },
-  { id: "uuid-generator", label: "uuid-generator",  desc: "ID Generator"  },
+  { id: "uuid-generator",   label: "uuid-generator",   desc: "ID Generator"    },
+  { id: "hash-generator",   label: "hash-generator",   desc: "Hash & Checksum" },
 ];
 
 export default function ToolNavSidebar({ currentTool }: { currentTool: string }) {
