@@ -71,20 +71,8 @@ backdropFilter: "blur(12px)",
                 padding: "5px 13px",
                 borderRadius: "5px",
                 transition: "all 0.2s",
-                color: "rgba(200, 210, 220, 0.85)",
-                border: "1px solid rgba(255,255,255,0.08)",
-                backgroundColor: "rgba(255,255,255,0.04)",
               }}
-              onMouseEnter={(e) => {
-                (e.currentTarget as HTMLAnchorElement).style.color = "#58a6ff";
-                (e.currentTarget as HTMLAnchorElement).style.borderColor = "rgba(88,166,255,0.35)";
-                (e.currentTarget as HTMLAnchorElement).style.backgroundColor = "rgba(88,166,255,0.08)";
-              }}
-              onMouseLeave={(e) => {
-                (e.currentTarget as HTMLAnchorElement).style.color = "rgba(200, 210, 220, 0.85)";
-                (e.currentTarget as HTMLAnchorElement).style.borderColor = "rgba(255,255,255,0.08)";
-                (e.currentTarget as HTMLAnchorElement).style.backgroundColor = "rgba(255,255,255,0.04)";
-              }}
+              className="text-[rgba(255,255,255,0.9)] border border-transparent bg-transparent hover:text-[#58a6ff]"
             >
               {label}
             </Link>

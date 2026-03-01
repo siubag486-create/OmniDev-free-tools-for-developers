@@ -109,6 +109,38 @@ function CopyBtn({ text, small }: { text: string; small?: boolean }) {
   );
 }
 
+// ── SegBtn ────────────────────────────────────────────────────────────────────
+
+function SegBtn({
+  active,
+  onClick,
+  children,
+}: {
+  active: boolean;
+  onClick: () => void;
+  children: React.ReactNode;
+}) {
+  return (
+    <button
+      onClick={onClick}
+      style={{
+        padding: "5px 12px",
+        fontFamily: monoFont,
+        fontSize: "0.72rem",
+        border: "1px solid transparent",
+        borderRadius: "4px",
+        cursor: "pointer",
+        transition: "all 0.15s",
+        backgroundColor: active ? "rgba(0,255,136,0.12)" : "transparent",
+        color: active ? "var(--terminal-green)" : "var(--comment-gray)",
+        borderColor: active ? "rgba(0,255,136,0.3)" : "transparent",
+      }}
+    >
+      {children}
+    </button>
+  );
+}
+
 // ── main component ────────────────────────────────────────────────────────────
 
 export default function UuidGeneratorClient() {
@@ -132,34 +164,6 @@ export default function UuidGeneratorClient() {
   };
 
   const COUNTS = [1, 5, 10, 20, 50];
-
-  const SegBtn = ({
-    active,
-    onClick,
-    children,
-  }: {
-    active: boolean;
-    onClick: () => void;
-    children: React.ReactNode;
-  }) => (
-    <button
-      onClick={onClick}
-      style={{
-        padding: "5px 12px",
-        fontFamily: monoFont,
-        fontSize: "0.72rem",
-        border: "1px solid transparent",
-        borderRadius: "4px",
-        cursor: "pointer",
-        transition: "all 0.15s",
-        backgroundColor: active ? "rgba(0,255,136,0.12)" : "transparent",
-        color: active ? "var(--terminal-green)" : "var(--comment-gray)",
-        borderColor: active ? "rgba(0,255,136,0.3)" : "transparent",
-      }}
-    >
-      {children}
-    </button>
-  );
 
   return (
     <div

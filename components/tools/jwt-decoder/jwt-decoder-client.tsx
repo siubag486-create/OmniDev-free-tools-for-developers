@@ -1356,7 +1356,7 @@ function SignatureCard({
 
 export default function JwtDecoderClient() {
   const [input, setInput] = useState("");
-  const [nowMs, setNowMs] = useState(Date.now());
+  const [nowMs, setNowMs] = useState(() => Date.now());
 
   // Live clock — updates every second for countdown
   useEffect(() => {
