@@ -83,7 +83,7 @@ Always dark — no light mode toggle.
 ## Routes
 
 완료:
-- `/` — Homepage (`TerminalHero` + 9-tool grid, soon 버튼 없음)
+- `/` — Homepage (scroll snap 2섹션: `TerminalHero` hero + `ToolsLanding` tools grid)
 - `/about` — About page
 - `/contact` — Contact page
 - `/privacy-policy` — Privacy Policy
@@ -131,7 +131,9 @@ Always dark — no light mode toggle.
 
 ## Components
 
-- `components/hero/terminal-hero.tsx` — **Client**, typewriter animation + 9-tool CTA grid (soon 없음)
+- `components/hero/terminal-hero.tsx` — **Client**, typewriter animation + "Explore Our Tools" CTA 버튼 + 바운스 chevron (툴 그리드 없음)
+- `components/home-wrapper.tsx` — **Client**, scroll snap 컨테이너 (`scrollSnapType: y mandatory`), body overflow 제어
+- `components/landing/tools-landing.tsx` — **Server**, 9개 툴 hover-effect 그리드 + 6개 coming soon 섹션 (lucide-react 아이콘)
 - `components/layout/navbar.tsx` — Fixed top navbar (server)
 - `components/layout/footer.tsx` — **Client**, site-wide footer
 - `components/layout/tool-nav-sidebar.tsx` — Tool navigation sidebar (server), 9개 도구 링크
