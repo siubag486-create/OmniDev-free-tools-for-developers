@@ -73,6 +73,7 @@ Always dark — no light mode toggle.
 - `.animate-fade-up` — entrance animation
 - `.cursor-blink` — blinking cursor
 - `.neo-card` — card with terminal border style
+- `.terminal-input` — placeholder color for terminal-style inputs (`::placeholder` rgba(110,118,129,0.35))
 
 ## Typography
 
@@ -100,6 +101,10 @@ Always dark — no light mode toggle.
 개발 예정:
 - `/tools/timestamp-converter` — Timestamp Converter
 - `/tools/cron-parser` — Cron Expression Parser
+- `/tools/color-converter` — Color Converter
+- `/tools/number-base-converter` — Number Base Converter
+- `/tools/string-case-converter` — String Case Converter
+- `/tools/markdown-preview` — Markdown Preview
 
 ## Tools Roadmap
 
@@ -115,10 +120,14 @@ Always dark — no light mode toggle.
 - **YAML ↔ JSON Converter** — 양방향 변환, 구문 강조, 파일 업로드/다운로드
 - **URL Encoder/Decoder** — encodeURIComponent 기반 인코딩/디코딩, Query String Parser 탭 (key/value 테이블, 개별 Copy)
 
-개발 예정:
+개발 예정 (우선순위 순):
 
-- **Timestamp Converter** — Unix timestamp ↔ 날짜/시간, 타임존 지원
-- **Cron Expression Parser** — Cron 파싱, 다음 실행 시간 미리보기
+1. **Timestamp Converter** — Unix timestamp ↔ 날짜/시간, 타임존 지원
+2. **Cron Expression Parser** — Cron 파싱, 다음 실행 시간 미리보기
+3. **Color Converter** — HEX ↔ RGB ↔ HSL ↔ OKLCH 변환
+4. **Number Base Converter** — 2진/8진/10진/16진 변환
+5. **String Case Converter** — camelCase ↔ snake_case ↔ kebab-case ↔ PascalCase
+6. **Markdown Preview** — 실시간 Markdown 렌더링 미리보기
 
 ## Components
 
@@ -135,6 +144,7 @@ Always dark — no light mode toggle.
 - `components/tools/hash-generator/hash-generator-client.tsx` — **Client**
 - `components/tools/yaml-to-json/yaml-to-json-client.tsx` — **Client**
 - `components/tools/url-encoder/url-encoder-client.tsx` — **Client**
+- `components/contact/contact-form-client.tsx` — **Client**, Google Sheets 연동 폼 (GAS fetch, `no-cors`), Email/Type/Feature Request 필드
 - `components/ui/` — shadcn components
 
 ## Key Dependencies
@@ -142,6 +152,7 @@ Always dark — no light mode toggle.
 - `jsonrepair` — JSON Auto-fix
 - `diff` — Text Diff 연산
 - `highlight.js` — 코드 하이라이팅
+- `js-yaml` — YAML 파싱 (YAML ↔ JSON 변환)
 - `lucide-react` — 아이콘
 - `radix-ui` — 헤드리스 UI primitives (shadcn 기반)
 

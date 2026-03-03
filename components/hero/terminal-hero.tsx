@@ -256,6 +256,12 @@ function TerminalLine({ text, delay, style }: LineConfig) {
   );
 }
 
+function handleExplore() {
+  document
+    .getElementById("tools-section")
+    ?.scrollIntoView({ behavior: "smooth" });
+}
+
 export default function TerminalHero() {
   const prompt = useTypewriter(PROMPT, 30, 50);
   const title = useTypewriter(TITLE, 45, 400);
@@ -282,48 +288,73 @@ export default function TerminalHero() {
           0%   { transform: translateY(-100%); }
           100% { transform: translateY(110vh); }
         }
-        .tool-btn {
-          border-left: 3px solid transparent;
-          transition: border-left-color 0.15s ease, background 0.15s ease;
+        @keyframes chevron-fade {
+          0%   { opacity: 0; transform: translateY(-6px) rotate(45deg); }
+          50%  { opacity: 1; transform: translateY(0px)  rotate(45deg); }
+          100% { opacity: 0; transform: translateY(6px)  rotate(45deg); }
+        }
+        .chevron-wrap {
           cursor: pointer;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 2px;
         }
-        .tool-btn:hover {
-          border-left-color: #00ff88;
-          background: rgba(0,255,136,0.09);
+        .chevron-wrap .chv {
+          display: block;
+          width: 22px;
+          height: 22px;
+          border-right: 2.5px solid;
+          border-bottom: 2.5px solid;
+          animation: chevron-fade 1.6s ease-in-out infinite;
         }
-        .tool-btn:hover .tool-icon {
-          background: #00ff88;
-          color: #060d0a;
-          border-color: #00ff88;
+        .chevron-wrap .chv:nth-child(1) { animation-delay: 0s;    border-color: rgba(0,255,136,0.25); }
+        .chevron-wrap .chv:nth-child(2) { animation-delay: 0.2s;  border-color: rgba(0,255,136,0.5); }
+        .chevron-wrap .chv:nth-child(3) { animation-delay: 0.4s;  border-color: rgba(0,255,136,0.8); }
+        .explore-cmd {
+          display: inline-flex;
+          align-items: center;
+          gap: 0;
+          background: rgba(0, 0, 0, 0.97);
+          border: none;
+          overflow: hidden;
+          cursor: pointer;
+          transition: border-color 0.15s ease, box-shadow 0.15s ease;
         }
-        .tool-btn:hover .tool-cmd {
-          color: #ffffff;
+        .explore-cmd:hover {
+          box-shadow: 0 0 12px rgba(0,255,136,0.1);
         }
-        .tool-btn:hover .tool-desc {
-          color: rgba(255,255,255,0.5);
-        }
-        .tool-btn:hover .tool-arrow {
-          transform: translateX(5px);
+        .explore-cmd:hover .explore-run {
+          background: rgba(0,255,136,0.18);
           color: #00ff88;
         }
-        .tool-arrow {
-          transition: transform 0.15s ease, color 0.15s ease;
+        .explore-cmd:hover .explore-line {
+          color: #e6edf3;
         }
-        .tool-icon {
-          transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
-        }
-        .tool-cmd {
+        .explore-line {
+          font-family: var(--font-geist-mono), monospace;
+          font-size: 0.82rem;
+          padding: 10px 18px;
+          color: #ffffff;
           transition: color 0.15s ease;
+          white-space: nowrap;
         }
-        .tool-desc {
-          transition: color 0.15s ease;
+        .explore-run {
+          padding: 10px 14px;
+          border-left: 1px solid rgba(0,255,136,0.12);
+          color: rgba(0,255,136,0.5);
+          font-size: 0.72rem;
+          font-family: var(--font-geist-mono), monospace;
+          transition: background 0.15s ease, color 0.15s ease;
+          white-space: nowrap;
         }
       `}</style>
       <section
-        className="min-h-screen flex flex-col items-center relative overflow-hidden"
+        className="flex flex-col items-center relative overflow-hidden"
         style={{
+          height: "100%",
           backgroundColor: "var(--terminal-bg)",
-          paddingTop: "128px",
+          paddingTop: "140px",
           justifyContent: "flex-start",
         }}
       >
@@ -386,9 +417,7 @@ export default function TerminalHero() {
           <div
             className="w-full terminal-glow"
             style={{
-              backgroundColor: "rgba(12, 12, 12, 0.97)",
-              border: "1px solid var(--terminal-border)",
-              borderRadius: "10px",
+              backgroundColor: "rgba(0, 0, 0, 0.97)",
               overflow: "hidden",
             }}
           >
@@ -615,7 +644,17 @@ export default function TerminalHero() {
 
           {/* CTA below terminal */}
           {showCta && (
-            <div className="animate-fade-up mt-15 flex flex-col items-center gap-6" style={{ width: "100%" }}>
+            <div
+              className="animate-fade-up"
+              style={{
+                marginTop: "120px",
+                paddingBottom: "100px",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                gap: "20px",
+              }}
+            >
               <p
                 style={{
                   fontFamily:
@@ -633,187 +672,37 @@ export default function TerminalHero() {
                 </span>
               </p>
 
-              {/* Tool grid — terminal card style */}
-              <div
-                style={{
-                  width: "100%",
-                  backgroundColor: "rgba(10, 14, 26, 0.92)",
-                  border: "1px solid rgba(0,255,136,0.18)",
-                  borderRadius: "8px",
-                  overflow: "hidden",
-                  fontFamily: "var(--font-geist-mono), monospace",
-                }}
-              >
-                {/* mini titlebar */}
-                <div
-                  style={{
-                    borderBottom: "1px solid rgba(0,255,136,0.1)",
-                    padding: "8px 16px",
-                    fontSize: "0.7rem",
-                    color: "#3a4a5a",
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "8px",
-                  }}
-                >
-                  <span
-                    style={{ color: "var(--terminal-green)", opacity: 0.45 }}
-                  >
-                    $
-                  </span>
-                  omnidev --list-tools
-                </div>
+              <button className="explore-cmd" onClick={handleExplore}>
+                <span className="explore-line">
+                  <span style={{ color: "#ffffff" }}>$</span>
+                  {" "}
+                  <span style={{ color: "#ffffff" }}>omnidev</span>
+                  {" "}
+                  <span style={{ color: "#ffffff" }}>explore</span>
+                  {" "}
+                  <span style={{ color: "#ffffff" }}>--tools</span>
+                </span>
+                <span className="explore-run">▶ run</span>
+              </button>
+            </div>
+          )}
 
-                {/* 3-column grid */}
-                <div
-                  style={{
-                    display: "grid",
-                    gridTemplateColumns: "repeat(3, 1fr)",
-                  }}
-                >
-                  {[
-                    {
-                      icon: "{ }",
-                      cmd: "json-formatter",
-                      desc: "Format & validate JSON",
-                      href: "/tools/json-formatter",
-                    },
-                    {
-                      icon: "/^/",
-                      cmd: "regex-tester",
-                      desc: "Test regex in realtime",
-                      href: "/tools/regex-tester",
-                    },
-                    {
-                      icon: "+/-",
-                      cmd: "text-diff",
-                      desc: "Compare texts side-by-side",
-                      href: "/tools/text-diff",
-                    },
-                    {
-                      icon: " 64",
-                      cmd: "base64",
-                      desc: "Encode / decode Base64",
-                      href: "/tools/base64",
-                    },
-                    {
-                      icon: "JWT",
-                      cmd: "jwt-decoder",
-                      desc: "Decode & verify JWT tokens",
-                      href: "/tools/jwt-decoder",
-                    },
-                    {
-                      icon: "UID",
-                      cmd: "uuid-generator",
-                      desc: "Generate UUID v1 / v4 / v7",
-                      href: "/tools/uuid-generator",
-                    },
-                    {
-                      icon: "###",
-                      cmd: "hash-generator",
-                      desc: "MD5 / SHA-256 / SHA-512 & HMAC",
-                      href: "/tools/hash-generator",
-                    },
-                    {
-                      icon: "YML",
-                      cmd: "yaml-to-json",
-                      desc: "YAML ↔ JSON converter",
-                      href: "/tools/yaml-to-json",
-                    },
-                    {
-                      icon: "URL",
-                      cmd: "url-encoder",
-                      desc: "URL encode / decode & query parser",
-                      href: "/tools/url-encoder",
-                    },
-                  ].map((tool, i) => (
-                    <a
-                      key={tool.cmd}
-                      href={tool.href}
-                      className="tool-btn"
-                      style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        padding: "16px 18px",
-                        textDecoration: "none",
-                        gap: "8px",
-                        borderRight:
-                          i % 3 !== 2
-                            ? "1px solid rgba(0,255,136,0.06)"
-                            : "none",
-                        borderBottom:
-                          i < 6
-                            ? "1px solid rgba(0,255,136,0.06)"
-                            : "none",
-                      }}
-                    >
-                      {/* Top row: icon + cmd + arrow */}
-                      <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                        <span
-                          className="tool-icon"
-                          style={{
-                            display: "inline-flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                            width: "34px",
-                            height: "24px",
-                            border: "1px solid rgba(0,255,136,0.28)",
-                            borderRadius: "4px",
-                            fontSize: "0.6rem",
-                            color: "var(--terminal-green)",
-                            flexShrink: 0,
-                            fontWeight: 600,
-                          }}
-                        >
-                          {tool.icon}
-                        </span>
-                        <span
-                          style={{
-                            color: "rgba(0,255,136,0.35)",
-                            fontSize: "0.72rem",
-                            flexShrink: 0,
-                          }}
-                        >
-                          $
-                        </span>
-                        <span
-                          className="tool-cmd"
-                          style={{
-                            color: "var(--terminal-green)",
-                            fontSize: "0.8rem",
-                            letterSpacing: "0.02em",
-                            flex: 1,
-                          }}
-                        >
-                          {tool.cmd}
-                        </span>
-                        <span
-                          className="tool-arrow"
-                          style={{
-                            color: "rgba(0,255,136,0.25)",
-                            fontSize: "0.85rem",
-                            flexShrink: 0,
-                          }}
-                        >
-                          →
-                        </span>
-                      </div>
-
-                      {/* Description */}
-                      <span
-                        className="tool-desc"
-                        style={{
-                          color: "var(--comment-gray)",
-                          fontSize: "0.73rem",
-                          paddingLeft: "2px",
-                        }}
-                      >
-                        # {tool.desc}
-                      </span>
-                    </a>
-                  ))}
-                </div>
-              </div>
+          {/* Chevron scroll indicator */}
+          {showCta && (
+            <div
+              className="chevron-wrap"
+              onClick={handleExplore}
+              style={{
+                position: "absolute",
+                bottom: "8px",
+                left: "50%",
+                transform: "translateX(-50%)",
+                userSelect: "none",
+              }}
+            >
+              <span className="chv" />
+              <span className="chv" />
+              <span className="chv" />
             </div>
           )}
         </div>
