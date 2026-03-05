@@ -184,6 +184,11 @@ Always dark — no light mode toggle.
 
 - `lib/utils.ts` — `cn()` helper (clsx + tailwind-merge)
 
+## Monetization
+
+- **Google AdSense**: 신청 준비 중. 아직 미설치. 승인 후 `layout.tsx`에 AdSense 스크립트 추가 예정
+- **Google Analytics**: 설치 완료 (`G-5THTY18LWH`), `layout.tsx`에 `next/script`로 삽입됨
+
 ## Tailwind v4 Notes
 
 - Uses `@tailwindcss/postcss` — no `tailwind.config.js`
