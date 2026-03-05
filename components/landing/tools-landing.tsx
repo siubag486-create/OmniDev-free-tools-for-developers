@@ -9,7 +9,6 @@ import {
   ShieldCheck,
   Split,
 } from "lucide-react";
-import { cn } from "@/lib/utils";
 
 const TOOLS = [
   {
