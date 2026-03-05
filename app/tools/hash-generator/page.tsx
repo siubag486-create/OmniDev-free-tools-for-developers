@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import HashGeneratorClient from "@/components/tools/hash-generator/hash-generator-client";
 import ToolNavSidebar from "@/components/layout/tool-nav-sidebar";
+import AdUnit from "@/components/ads/ad-unit";
 
 export const metadata: Metadata = {
   title: "The Best Hash Generator — Free, Instant, Secured, No Server | OmniDev",
@@ -35,6 +36,7 @@ const monoFont = "'RoundedFixedsys', var(--font-geist-mono), monospace";
 export default function HashGeneratorPage() {
   return (
     <main
+      className="tool-page-main"
       style={{
         backgroundColor: "var(--terminal-bg)",
         minHeight: "100vh",
@@ -75,6 +77,7 @@ export default function HashGeneratorPage() {
           gap: "32px",
           alignItems: "flex-start",
         }}
+        className="tool-page-layout"
       >
         {/* Main content */}
         <div style={{ flex: 1, minWidth: 0 }}>
@@ -189,6 +192,8 @@ export default function HashGeneratorPage() {
 
           {/* Tool */}
           <HashGeneratorClient />
+
+          <AdUnit />
 
           {/* Description section */}
           <div style={{ marginTop: "60px" }}>

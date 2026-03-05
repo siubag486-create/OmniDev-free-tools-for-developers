@@ -1,4 +1,5 @@
 import Link from "next/link";
+import AdUnit from "@/components/ads/ad-unit";
 
 const monoFont = "'RoundedFixedsys', var(--font-geist-mono), monospace";
 
@@ -19,6 +20,7 @@ export default function ToolNavSidebar({ currentTool }: { currentTool: string })
 
   return (
     <aside
+      className="tool-sidebar"
       style={{
         width: "192px",
         flexShrink: 0,
@@ -110,6 +112,11 @@ export default function ToolNavSidebar({ currentTool }: { currentTool: string })
             </p>
           </Link>
         ))}
+      </div>
+
+      {/* Ad unit */}
+      <div style={{ marginTop: "20px" }}>
+        <AdUnit />
       </div>
 
       {/* Hover styles injected inline */}

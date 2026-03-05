@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import RegexTesterClient from "@/components/tools/regex-tester/regex-tester-client";
 import ToolNavSidebar from "@/components/layout/tool-nav-sidebar";
+import AdUnit from "@/components/ads/ad-unit";
 
 export const metadata: Metadata = {
   title: "The Best Regex Tester — Free, Instant, Secured, No Server | OmniDev",
@@ -31,6 +32,7 @@ const monoFont = "'RoundedFixedsys', var(--font-geist-mono), monospace";
 export default function RegexTesterPage() {
   return (
     <main
+      className="tool-page-main"
       style={{
         backgroundColor: "var(--terminal-bg)",
         minHeight: "100vh",
@@ -77,6 +79,7 @@ export default function RegexTesterPage() {
           gap: "32px",
           alignItems: "flex-start",
         }}
+        className="tool-page-layout"
       >
         {/* Main content */}
         <div style={{ flex: 1, minWidth: 0 }}>
@@ -191,6 +194,8 @@ export default function RegexTesterPage() {
 
           {/* Tool */}
           <RegexTesterClient />
+
+          <AdUnit />
 
           {/* Description section */}
           <div style={{ marginTop: "60px" }}>

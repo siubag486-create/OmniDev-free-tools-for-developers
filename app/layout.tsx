@@ -58,6 +58,12 @@ export default function RootLayout({
         {children}
         <Footer />
         <Script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3842295775842337"
+          crossOrigin="anonymous"
+          strategy="afterInteractive"
+        />
+        <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-5THTY18LWH"
           strategy="afterInteractive"
         />

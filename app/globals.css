@@ -331,3 +331,27 @@
 .terminal-input::placeholder {
   color: rgba(110, 118, 129, 0.35);
 }
+
+/* ============================================
+   Mobile Responsive Styles
+   ============================================ */
+@media (max-width: 768px) {
+  body {
+    overflow-x: hidden;
+  }
+
+  .tool-page-main {
+    overflow: visible !important;
+  }
+
+  .tool-page-layout {
+    flex-direction: column !important;
+    gap: 0 !important;
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
+
+  .tool-sidebar {
+    display: none !important;
+  }
+}

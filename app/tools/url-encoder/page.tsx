@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import UrlEncoderClient from "@/components/tools/url-encoder/url-encoder-client";
 import ToolNavSidebar from "@/components/layout/tool-nav-sidebar";
+import AdUnit from "@/components/ads/ad-unit";
 
 export const metadata: Metadata = {
   title: "The Best URL Encoder/Decoder — Free, Instant, Secured, No Server | OmniDev",
@@ -33,6 +34,7 @@ const monoFont = "'RoundedFixedsys', var(--font-geist-mono), monospace";
 export default function UrlEncoderPage() {
   return (
     <main
+      className="tool-page-main"
       style={{
         backgroundColor: "var(--terminal-bg)",
         minHeight: "100vh",
@@ -79,6 +81,7 @@ export default function UrlEncoderPage() {
           gap: "32px",
           alignItems: "flex-start",
         }}
+        className="tool-page-layout"
       >
         {/* Main content */}
         <div style={{ flex: 1, minWidth: 0 }}>
@@ -220,6 +223,8 @@ export default function UrlEncoderPage() {
 
           {/* Tool */}
           <UrlEncoderClient />
+
+          <AdUnit />
 
           {/* Description section */}
           <div style={{ marginTop: "60px" }}>
