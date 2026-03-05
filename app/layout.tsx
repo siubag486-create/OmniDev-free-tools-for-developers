@@ -22,6 +22,7 @@ const spaceMono = Space_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://www.omnidevtools.com"),
   title: "OmniDev — Free tools for Developers",
   description:
     "Free tools for Developers. OmniDev provides interactive developer tools to help you build, format, and debug faster.",
@@ -30,6 +31,7 @@ export const metadata: Metadata = {
     description:
       "Free tools for Developers. OmniDev provides interactive developer tools to help you build, format, and debug faster.",
     type: "website",
+    url: "https://www.omnidevtools.com",
   },
 };
 
