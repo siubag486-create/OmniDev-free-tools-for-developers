@@ -2,6 +2,7 @@ import {
   ArrowLeftRight,
   Binary,
   Braces,
+  Clock,
   Fingerprint,
   Key,
   Link2,
@@ -65,10 +66,15 @@ const TOOLS = [
     href: "/tools/url-encoder",
     icon: <Link2 size={22} />,
   },
+  {
+    cmd: "timestamp-converter",
+    desc: "Unix timestamp ↔ datetime & timezone",
+    href: "/tools/timestamp-converter",
+    icon: <Clock size={22} />,
+  },
 ];
 
 const COMING_SOON = [
-  { icon: "TSP", cmd: "timestamp-converter", desc: "Unix ↔ datetime & timezone" },
   { icon: "CRN", cmd: "cron-parser", desc: "Parse cron expressions" },
   { icon: "CLR", cmd: "color-converter", desc: "HEX ↔ RGB ↔ HSL ↔ OKLCH" },
   { icon: "BAS", cmd: "number-base-converter", desc: "Bin / Oct / Dec / Hex" },
@@ -169,15 +175,15 @@ export default function ToolsLanding() {
 
                 {/* Icon */}
                 <div
-                  className="relative z-10 mb-4 transition-colors duration-200 text-[rgba(0,255,136,0.4)] group-hover/feature:text-[#00ff88]"
+                  className="relative z-10 mb-4 transition-colors duration-200 text-[#00ff88] group-hover/feature:text-[#00ff88]"
                 >
                   {tool.icon}
                 </div>
 
                 {/* Command title */}
                 <div className="relative z-10 mb-2 text-sm font-semibold">
-                  <span className="inline-block transition-transform duration-200 group-hover/feature:translate-x-2 text-[rgba(0,255,136,0.75)] group-hover/feature:text-[#00ff88]">
-                    <span style={{ color: "rgba(0,255,136,0.3)", marginRight: "4px" }}>$</span>
+                  <span className="inline-block transition-transform duration-200 group-hover/feature:translate-x-2 text-[#00ff88] group-hover/feature:text-[#00ff88]">
+                    <span style={{ color: "#00ff88", marginRight: "4px" }}>$</span>
                     {tool.cmd}
                   </span>
                 </div>

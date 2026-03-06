@@ -119,9 +119,9 @@ Always dark — no light mode toggle.
 - `/tools/hash-generator` — Hash Generator
 - `/tools/yaml-to-json` — YAML ↔ JSON Converter
 - `/tools/url-encoder` — URL Encoder/Decoder
+- `/tools/timestamp-converter` — Timestamp Converter
 
 개발 예정:
-- `/tools/timestamp-converter` — Timestamp Converter
 - `/tools/cron-parser` — Cron Expression Parser
 - `/tools/color-converter` — Color Converter
 - `/tools/number-base-converter` — Number Base Converter
@@ -130,7 +130,7 @@ Always dark — no light mode toggle.
 
 ## Tools Roadmap
 
-개발 완료 (9개):
+개발 완료 (10개):
 
 - **JSON Formatter** — 포맷/검증/Auto-fix/Minify, Tree view, Diff view
 - **Regex Tester** — 실시간 매칭 하이라이트, 플래그 토글, 캡처 그룹, ₩→\\ 자동변환
@@ -141,24 +141,23 @@ Always dark — no light mode toggle.
 - **Hash Generator** — MD5/SHA-1/SHA-256/SHA-384/SHA-512, HMAC, 파일 해시 지원
 - **YAML ↔ JSON Converter** — 양방향 변환, 구문 강조, 파일 업로드/다운로드
 - **URL Encoder/Decoder** — encodeURIComponent 기반 인코딩/디코딩, Query String Parser 탭 (key/value 테이블, 개별 Copy)
+- **Timestamp Converter** — Unix timestamp ↔ 날짜/시간, 타임존 지원, ISO 8601, 상대시간
 
 개발 예정 (우선순위 순):
-
-1. **Timestamp Converter** — Unix timestamp ↔ 날짜/시간, 타임존 지원
-2. **Cron Expression Parser** — Cron 파싱, 다음 실행 시간 미리보기
-3. **Color Converter** — HEX ↔ RGB ↔ HSL ↔ OKLCH 변환
-4. **Number Base Converter** — 2진/8진/10진/16진 변환
+1. **SQL Formatter** — SQL 쿼리 포맷/정리, 키워드 대소문자 통일, 들여쓰기 정규화
+2. **Color Converter** — HEX ↔ RGB ↔ HSL ↔ OKLCH 변환
+3. **Markdown Preview** — 실시간 Markdown 렌더링 미리보기
+4. **Cron Expression Parser** — Cron 파싱, 다음 실행 시간 미리보기
 5. **String Case Converter** — camelCase ↔ snake_case ↔ kebab-case ↔ PascalCase
-6. **Markdown Preview** — 실시간 Markdown 렌더링 미리보기
 
 ## Components
 
 - `components/hero/terminal-hero.tsx` — **Client**, typewriter animation + "Explore Our Tools" Terminal Border 버튼 (hover: 초록 fill) + 바운스 chevron
 - `components/home-wrapper.tsx` — **Client**, scroll snap 컨테이너 (`scrollSnapType: y mandatory`), body overflow 제어
-- `components/landing/tools-landing.tsx` — **Server**, 9개 툴 hover-effect 그리드 + 6개 coming soon 섹션 (lucide-react 아이콘)
+- `components/landing/tools-landing.tsx` — **Server**, 10개 툴 hover-effect 그리드 + 5개 coming soon 섹션 (lucide-react 아이콘)
 - `components/layout/navbar.tsx` — Fixed top navbar (server)
 - `components/layout/footer.tsx` — **Client**, site-wide footer
-- `components/layout/tool-nav-sidebar.tsx` — Tool navigation sidebar (server), 9개 도구 링크
+- `components/layout/tool-nav-sidebar.tsx` — Tool navigation sidebar (server), 10개 도구 링크
 - `components/tools/json-formatter/json-formatter-client.tsx` — **Client** (jsonrepair)
 - `components/tools/regex-tester/regex-tester-client.tsx` — **Client**
 - `components/tools/text-diff/text-diff-client.tsx` — **Client** (diff 라이브러리)
@@ -168,6 +167,7 @@ Always dark — no light mode toggle.
 - `components/tools/hash-generator/hash-generator-client.tsx` — **Client**
 - `components/tools/yaml-to-json/yaml-to-json-client.tsx` — **Client**
 - `components/tools/url-encoder/url-encoder-client.tsx` — **Client**
+- `components/tools/timestamp-converter/timestamp-converter-client.tsx` — **Client**
 - `components/contact/contact-form-client.tsx` — **Client**, Google Sheets 연동 폼 (GAS fetch, `no-cors`), Email/Type/Feature Request 필드
 - `components/ui/` — shadcn components
 
@@ -188,6 +188,22 @@ Always dark — no light mode toggle.
 
 - **Google AdSense**: 신청 준비 중. 아직 미설치. 승인 후 `layout.tsx`에 AdSense 스크립트 추가 예정
 - **Google Analytics**: 설치 완료 (`G-5THTY18LWH`), `layout.tsx`에 `next/script`로 삽입됨
+
+## New Tool Checklist
+
+새 도구를 추가할 때마다 반드시 아래 7가지를 모두 완료할 것:
+
+1. **도구 페이지 생성** — `app/tools/[tool-name]/page.tsx` + `components/tools/[tool-name]/[tool-name]-client.tsx`
+2. **랜딩페이지 업데이트** — `components/landing/tools-landing.tsx`에 카드/버튼 추가 (coming soon → 완료 이동)
+3. **사이드바 업데이트** — `components/layout/tool-nav-sidebar.tsx`에 링크 추가
+4. **sitemap 업데이트** — `app/sitemap.ts`에 경로 추가
+5. **AdSense 광고 삽입** — 도구 페이지 내 적절한 위치에 광고 슬롯 추가
+6. **About 업데이트** — `/about` 페이지 도구 목록/설명 반영
+7. **메타데이터 추가** — `page.tsx`에 아래 항목 모두 포함:
+   - `export const metadata` — `title` (패턴: `The Best [Tool] — Free, Instant, Secured, No Server | OmniDev`), `description`, `keywords`
+   - `openGraph` — `title`, `description`, `url`, `images` (public/og-image.jpg, 1200×630)
+   - `twitter` — `card: "summary_large_image"`, `title`, `description`, `images`
+   - `JSON-LD` — `@type: WebApplication`, `offers.price: "0"`, `applicationCategory: "DeveloperApplication"`
 
 ## Tailwind v4 Notes
 

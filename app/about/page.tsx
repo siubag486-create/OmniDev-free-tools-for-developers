@@ -186,6 +186,10 @@ export default function AboutPage() {
                 name: "URL Encoder / Decoder",
                 desc: "Encode and decode URLs with percent-encoding and query string parsing",
               },
+              {
+                name: "Timestamp Converter",
+                desc: "Convert Unix timestamps to human-readable dates with timezone support and ISO 8601",
+              },
             ].map(({ name, desc }) => (
               <div
                 key={name}
@@ -242,10 +246,6 @@ export default function AboutPage() {
             }}
           >
             {[
-              {
-                name: "Timestamp Converter",
-                desc: "Convert Unix timestamps to human-readable dates with timezone support",
-              },
               {
                 name: "Cron Expression Parser",
                 desc: "Parse cron expressions and preview upcoming execution times",

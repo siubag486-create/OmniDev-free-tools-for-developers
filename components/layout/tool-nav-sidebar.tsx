@@ -4,15 +4,16 @@ import AdUnit from "@/components/ads/ad-unit";
 const monoFont = "'RoundedFixedsys', var(--font-geist-mono), monospace";
 
 const tools = [
-  { id: "json-formatter", label: "json-formatter", desc: "Format & Validate" },
-  { id: "regex-tester",   label: "regex-tester",   desc: "Pattern Matching" },
-  { id: "text-diff",      label: "text-diff",       desc: "Compare Texts"   },
-  { id: "base64",         label: "base64",           desc: "Encode / Decode" },
-  { id: "jwt-decoder",    label: "jwt-decoder",     desc: "Token Decoder" },
-  { id: "uuid-generator",   label: "uuid-generator",   desc: "ID Generator"    },
-  { id: "hash-generator",   label: "hash-generator",   desc: "Hash & Checksum" },
-  { id: "url-encoder",      label: "url-encoder",      desc: "Encode / Decode"  },
-  { id: "yaml-to-json",     label: "yaml-to-json",     desc: "YAML ↔ JSON"      },
+  { id: "json-formatter",       label: "json-formatter",       desc: "Format & Validate" },
+  { id: "regex-tester",         label: "regex-tester",         desc: "Pattern Matching" },
+  { id: "text-diff",            label: "text-diff",            desc: "Compare Texts"   },
+  { id: "base64",               label: "base64",               desc: "Encode / Decode" },
+  { id: "jwt-decoder",          label: "jwt-decoder",          desc: "Token Decoder" },
+  { id: "uuid-generator",       label: "uuid-generator",       desc: "ID Generator"    },
+  { id: "hash-generator",       label: "hash-generator",       desc: "Hash & Checksum" },
+  { id: "url-encoder",          label: "url-encoder",          desc: "Encode / Decode"  },
+  { id: "yaml-to-json",         label: "yaml-to-json",         desc: "YAML ↔ JSON"      },
+  { id: "timestamp-converter",  label: "timestamp-converter",  desc: "Unix ↔ Datetime"  },
 ];
 
 export default function ToolNavSidebar({ currentTool }: { currentTool: string }) {
@@ -46,7 +47,17 @@ export default function ToolNavSidebar({ currentTool }: { currentTool: string })
       </p>
 
       {/* Tool links */}
-      <div style={{ display: "flex", flexDirection: "column", gap: "2px" }}>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          gap: "2px",
+          maxHeight: "460px",
+          overflowY: "auto",
+          scrollbarWidth: "none",
+        }}
+        className="tool-nav-scroll"
+      >
         {others.map((tool) => (
           <Link
             key={tool.id}
@@ -114,13 +125,31 @@ export default function ToolNavSidebar({ currentTool }: { currentTool: string })
         ))}
       </div>
 
+      {/* Scroll hint */}
+      <p
+        style={{
+          fontFamily: monoFont,
+          fontSize: "0.58rem",
+          color: "rgba(0,255,136,0.7)",
+          letterSpacing: "0.06em",
+          marginTop: "6px",
+          userSelect: "none",
+          textAlign: "center",
+        }}
+      >
+        ↓ scroll for more
+      </p>
+
       {/* Ad unit */}
-      <div style={{ marginTop: "20px" }}>
+      <div style={{ marginTop: "16px" }}>
         <AdUnit />
       </div>
 
       {/* Hover styles injected inline */}
       <style>{`
+        .tool-nav-scroll::-webkit-scrollbar {
+          display: none;
+        }
         .tool-nav-link:hover {
           background: rgba(0,255,136,0.05) !important;
           border-color: rgba(0,255,136,0.15) !important;

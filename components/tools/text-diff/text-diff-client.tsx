@@ -1,8 +1,9 @@
 "use client";
 
-import { useState, useMemo, useRef } from "react";
+import { useState, useMemo, useRef, useEffect } from "react";
+import { createPortal } from "react-dom";
 import { diffLines, diffArrays, Change } from "diff";
-import { Copy, Check, Trash2, ShieldCheck } from "lucide-react";
+import { Copy, Check, Trash2, ShieldCheck, ChevronDown } from "lucide-react";
 import hljs from "highlight.js/lib/core";
 import javascript from "highlight.js/lib/languages/javascript";
 import typescript from "highlight.js/lib/languages/typescript";
@@ -50,7 +51,8 @@ interface PanelLine {
   lineNum: number;
   content: string;
   type: "added" | "removed" | "unchanged";
-  inlineHtml?: string; // word-level diff HTML for matched pairs
+  inlineHtml?: string; // word-level diff HTML for matched pairs (lang=none)
+  inlineRanges?: { start: number; end: number }[]; // char ranges for syntax+mark combo
 }
 
 interface DiffResult {
@@ -184,28 +186,114 @@ function tokenizeForDiff(s: string): string[] {
 function computeInlineDiff(
   left: string,
   right: string
-): { leftHtml: string; rightHtml: string } {
+): {
+  leftHtml: string;
+  rightHtml: string;
+  leftRanges: { start: number; end: number }[];
+  rightRanges: { start: number; end: number }[];
+} {
   const leftTokens = tokenizeForDiff(left);
   const rightTokens = tokenizeForDiff(right);
   const changes = diffArrays(leftTokens, rightTokens);
 
   let leftHtml = "";
   let rightHtml = "";
+  let leftPos = 0;
+  let rightPos = 0;
+  const leftRanges: { start: number; end: number }[] = [];
+  const rightRanges: { start: number; end: number }[] = [];
 
   for (const change of changes) {
     const text = change.value.join("");
     const escaped = escapeHtml(text);
     if (change.removed) {
       leftHtml += `<mark style="background:rgba(255,80,80,0.42);border-radius:2px;padding:0 1px;">${escaped}</mark>`;
+      if (text.length > 0) leftRanges.push({ start: leftPos, end: leftPos + text.length });
+      leftPos += text.length;
     } else if (change.added) {
       rightHtml += `<mark style="background:rgba(0,255,136,0.42);border-radius:2px;padding:0 1px;">${escaped}</mark>`;
+      if (text.length > 0) rightRanges.push({ start: rightPos, end: rightPos + text.length });
+      rightPos += text.length;
     } else {
       leftHtml += escaped;
       rightHtml += escaped;
+      leftPos += text.length;
+      rightPos += text.length;
     }
   }
 
-  return { leftHtml, rightHtml };
+  return { leftHtml, rightHtml, leftRanges, rightRanges };
+}
+
+// Inserts <mark> tags into syntax-highlighted HTML at plain-text character positions.
+// Handles HTML tags (skipped) and HTML entities (count as 1 char).
+function insertMarksIntoHtml(
+  html: string,
+  ranges: { start: number; end: number }[],
+  markStyle: string
+): string {
+  if (ranges.length === 0) return html;
+
+  const sorted = [...ranges].sort((a, b) => a.start - b.start);
+  let result = "";
+  let textPos = 0;
+  let i = 0;
+  let rangeIdx = 0;
+  let inMark = false;
+
+  const openMark = () => { result += `<mark style="${markStyle}">`; inMark = true; };
+  const closeMark = () => { result += "</mark>"; inMark = false; rangeIdx++; };
+
+  while (i < html.length) {
+    // Open/close marks at current textPos boundary
+    if (!inMark && rangeIdx < sorted.length && textPos === sorted[rangeIdx].start) openMark();
+    if (inMark && rangeIdx < sorted.length && textPos === sorted[rangeIdx].end) {
+      closeMark();
+      if (!inMark && rangeIdx < sorted.length && textPos === sorted[rangeIdx].start) openMark();
+    }
+
+    if (html[i] === "<") {
+      // HTML tag — no text advance; close/reopen mark around the tag
+      const tagEnd = html.indexOf(">", i) + 1;
+      if (tagEnd === 0) { result += html.slice(i); break; }
+      if (inMark) {
+        result += "</mark>";
+        result += html.slice(i, tagEnd);
+        result += `<mark style="${markStyle}">`;
+      } else {
+        result += html.slice(i, tagEnd);
+      }
+      i = tagEnd;
+    } else if (html[i] === "&") {
+      // HTML entity — counts as 1 text char
+      const entityEnd = html.indexOf(";", i) + 1;
+      if (entityEnd === 0) { result += html.slice(i); break; }
+      result += html.slice(i, entityEnd);
+      textPos++;
+      i = entityEnd;
+      // Post-advance boundary check
+      if (inMark && rangeIdx < sorted.length && textPos === sorted[rangeIdx].end) {
+        closeMark();
+        if (!inMark && rangeIdx < sorted.length && textPos === sorted[rangeIdx].start) openMark();
+      } else if (!inMark && rangeIdx < sorted.length && textPos === sorted[rangeIdx].start) {
+        openMark();
+      }
+    } else {
+      result += html[i];
+      textPos++;
+      i++;
+      // Post-advance boundary check
+      if (inMark && rangeIdx < sorted.length && textPos === sorted[rangeIdx].end) {
+        closeMark();
+        if (!inMark && rangeIdx < sorted.length && textPos === sorted[rangeIdx].start) openMark();
+      } else if (!inMark && rangeIdx < sorted.length && textPos === sorted[rangeIdx].start) {
+        openMark();
+      }
+    }
+  }
+
+  if (inMark) result += "</mark>";
+  return result;
 }
 
 function computeDiff(
@@ -272,7 +360,9 @@ function computeDiff(
       for (let j = 0; j < removedLines.length; j++) {
         const pl: PanelLine = { lineNum: leftNum++, content: removedLines[j], type: "removed" };
         if (pairByRi.has(j)) {
-          pl.inlineHtml = inlineCache.get(j)!.leftHtml;
+          const cached = inlineCache.get(j)!;
+          pl.inlineHtml = cached.leftHtml;
+          pl.inlineRanges = cached.leftRanges;
         }
         leftPanel.push(pl);
       }
@@ -282,7 +372,9 @@ function computeDiff(
         const pl: PanelLine = { lineNum: rightNum++, content: addedLines[j], type: "added" };
         const ri = pairByAi.get(j);
         if (ri !== undefined) {
-          pl.inlineHtml = inlineCache.get(ri)!.rightHtml;
+          const cached = inlineCache.get(ri)!;
+          pl.inlineHtml = cached.rightHtml;
+          pl.inlineRanges = cached.rightRanges;
         }
         rightPanel.push(pl);
       }
@@ -322,6 +414,110 @@ const LANG_OPTIONS: { value: SyntaxLang; label: string }[] = [
   { value: "bash", label: "Bash" },
   { value: "sql", label: "SQL" },
 ];
+
+function LangSelect({
+  value,
+  onChange,
+}: {
+  value: SyntaxLang;
+  onChange: (v: SyntaxLang) => void;
+}) {
+  const [open, setOpen] = useState(false);
+  const [dropdownPos, setDropdownPos] = useState({ top: 0, left: 0, width: 0 });
+  const triggerRef = useRef<HTMLButtonElement>(null);
+
+  const selected = LANG_OPTIONS.find((o) => o.value === value);
+
+  const openDropdown = () => {
+    if (triggerRef.current) {
+      const rect = triggerRef.current.getBoundingClientRect();
+      setDropdownPos({
+        top: rect.bottom + window.scrollY + 4,
+        left: rect.left + window.scrollX,
+        width: Math.max(rect.width, 160),
+      });
+    }
+    setOpen((o) => !o);
+  };
+
+  useEffect(() => {
+    function handleClick(e: MouseEvent) {
+      const target = e.target as Node;
+      if (triggerRef.current && !triggerRef.current.contains(target)) {
+        const dropdown = document.getElementById("lang-dropdown");
+        if (!dropdown || !dropdown.contains(target)) {
+          setOpen(false);
+        }
+      }
+    }
+    document.addEventListener("mousedown", handleClick);
+    return () => document.removeEventListener("mousedown", handleClick);
+  }, []);
+
+  const dropdown =
+    open && typeof document !== "undefined"
+      ? createPortal(
+          <div
+            id="lang-dropdown"
+            style={{
+              position: "absolute",
+              top: dropdownPos.top,
+              left: dropdownPos.left,
+              width: dropdownPos.width,
+              zIndex: 9999,
+              border: "1px solid rgba(88,166,255,0.2)",
+              borderRadius: "8px",
+              background: "#0d1117",
+              overflow: "hidden",
+              boxShadow: "0 8px 24px rgba(0,0,0,0.6)",
+            }}
+          >
+            <div style={{ maxHeight: "220px", overflowY: "auto" }}>
+              {LANG_OPTIONS.map((opt) => (
+                <button
+                  key={opt.value}
+                  onClick={() => { onChange(opt.value); setOpen(false); }}
+                  style={{
+                    display: "block", width: "100%", textAlign: "left",
+                    padding: "8px 14px", fontFamily: monoFont, fontSize: "0.72rem",
+                    border: "none", cursor: "pointer",
+                    background: opt.value === value ? "rgba(0,255,136,0.08)" : "none",
+                    color: opt.value === value ? "var(--terminal-green)" : "var(--code-comment)",
+                    transition: "background 0.1s",
+                  }}
+                  onMouseEnter={(e) => { if (opt.value !== value) (e.currentTarget as HTMLButtonElement).style.background = "rgba(255,255,255,0.04)"; }}
+                  onMouseLeave={(e) => { if (opt.value !== value) (e.currentTarget as HTMLButtonElement).style.background = "none"; }}
+                >
+                  {opt.label}
+                </button>
+              ))}
+            </div>
+          </div>,
+          document.body
+        )
+      : null;
+
+  return (
+    <div style={{ position: "relative" }}>
+      <button
+        ref={triggerRef}
+        onClick={openDropdown}
+        style={{
+          display: "flex", alignItems: "center", gap: "6px",
+          fontFamily: monoFont, fontSize: "0.75rem", padding: "5px 10px",
+          borderRadius: "5px", border: "1px solid var(--terminal-border-bright)",
+          background: "transparent", color: "var(--code-comment)",
+          outline: "none", cursor: "pointer", minWidth: "130px",
+          justifyContent: "space-between", lineHeight: 1,
+        }}
+      >
+        <span>{selected?.label ?? value}</span>
+        <ChevronDown size={12} style={{ flexShrink: 0, opacity: 0.5, transform: open ? "rotate(180deg)" : "none", transition: "transform 0.15s" }} />
+      </button>
+      {dropdown}
+    </div>
+  );
+}
 
 const toolbarBtnBase: React.CSSProperties = {
   display: "flex",
@@ -366,13 +562,32 @@ function PanelRow({
   line: PanelLine;
   lang: SyntaxLang;
 }) {
-  const html =
-    line.inlineHtml ??
-    (line.type === "removed"
-      ? `<mark style="background:rgba(255,80,80,0.35);border-radius:2px;padding:0 1px;">${escapeHtml(line.content)}</mark>`
-      : line.type === "added"
-        ? `<mark style="background:rgba(0,255,136,0.30);border-radius:2px;padding:0 1px;">${escapeHtml(line.content)}</mark>`
-        : highlightLine(line.content, lang));
+  let html: string;
+  if (lang !== "none" && line.type !== "unchanged") {
+    const highlighted = highlightLine(line.content, lang);
+    if (line.inlineRanges && line.inlineRanges.length > 0) {
+      const markStyle =
+        line.type === "removed"
+          ? "background:rgba(255,80,80,0.42);border-radius:2px;padding:0 1px;"
+          : "background:rgba(0,255,136,0.42);border-radius:2px;padding:0 1px;";
+      html = insertMarksIntoHtml(highlighted, line.inlineRanges, markStyle);
+    } else {
+      // 매칭 쌍 없는 단독 추가/삭제 줄 — 전체를 mark로 감싸되 syntax color 유지
+      const markStyle =
+        line.type === "removed"
+          ? "background:rgba(255,80,80,0.35);border-radius:2px;padding:0 1px;"
+          : "background:rgba(0,255,136,0.30);border-radius:2px;padding:0 1px;";
+      html = `<mark style="${markStyle}">${highlighted}</mark>`;
+    }
+  } else {
+    html =
+      line.inlineHtml ??
+      (line.type === "removed"
+        ? `<mark style="background:rgba(255,80,80,0.35);border-radius:2px;padding:0 1px;">${escapeHtml(line.content)}</mark>`
+        : line.type === "added"
+          ? `<mark style="background:rgba(0,255,136,0.30);border-radius:2px;padding:0 1px;">${escapeHtml(line.content)}</mark>`
+          : highlightLine(line.content, lang));
+  }
   const bg =
     line.type === "removed"
       ? "rgba(255,80,80,0.12)"
@@ -482,10 +697,10 @@ export default function TextDiffClient() {
     [result, hideUnchanged]
   );
 
-  // Unified view inline diff map
-  const unifiedInlineMap = useMemo((): Map<DiffLine, string> => {
+  // Unified view inline diff map: DiffLine -> { html, ranges }
+  const unifiedInlineMap = useMemo((): Map<DiffLine, { html: string; ranges: { start: number; end: number }[] }> => {
     if (!result) return new Map();
-    const map = new Map<DiffLine, string>();
+    const map = new Map<DiffLine, { html: string; ranges: { start: number; end: number }[] }>();
     const lines = result.unifiedLines;
     let i = 0;
 
@@ -504,12 +719,12 @@ export default function TextDiffClient() {
           addedBlock.map((l) => l.content)
         );
         for (const { ri, ai } of pairs) {
-          const { leftHtml, rightHtml } = computeInlineDiff(
+          const { leftHtml, rightHtml, leftRanges, rightRanges } = computeInlineDiff(
             removedBlock[ri].content,
             addedBlock[ai].content
           );
-          map.set(removedBlock[ri], leftHtml);
-          map.set(addedBlock[ai], rightHtml);
+          map.set(removedBlock[ri], { html: leftHtml, ranges: leftRanges });
+          map.set(addedBlock[ai], { html: rightHtml, ranges: rightRanges });
         }
       } else {
         i++;
@@ -809,28 +1024,7 @@ export default function TextDiffClient() {
 
         {/* Right: controls */}
         <div style={{ display: "flex", alignItems: "center", gap: "5px", flexWrap: "wrap" }}>
-          <select
-            value={syntaxLang}
-            onChange={(e) => setSyntaxLang(e.target.value as SyntaxLang)}
-            style={{
-              fontFamily: monoFont,
-              fontSize: "0.75rem",
-              padding: "5px 10px",
-              borderRadius: "5px",
-              border: "1px solid var(--terminal-border-bright)",
-              backgroundColor: "transparent",
-              color: "var(--code-comment)",
-              cursor: "pointer",
-              outline: "none",
-              lineHeight: 1,
-            }}
-          >
-            {LANG_OPTIONS.map((opt) => (
-              <option key={opt.value} value={opt.value} style={{ backgroundColor: "#111111" }}>
-                {opt.label}
-              </option>
-            ))}
-          </select>
+          <LangSelect value={syntaxLang} onChange={setSyntaxLang} />
 
           {divider}
 
@@ -935,15 +1129,32 @@ export default function TextDiffClient() {
               // ── Unified view ────────────────────────────────────────────────
               <div style={{ overflowX: "auto", minWidth: "100%", maxHeight: "640px", overflowY: "auto" }}>
                 {displayedUnified.map((line, idx) => {
-                  const hasInline = unifiedInlineMap.has(line);
-                  const highlighted =
-                    hasInline
-                      ? unifiedInlineMap.get(line)!
-                      : line.type === "removed"
-                        ? `<mark style="background:rgba(255,80,80,0.42);border-radius:2px;padding:0 1px;">${escapeHtml(line.content)}</mark>`
-                        : line.type === "added"
-                          ? `<mark style="background:rgba(0,255,136,0.35);border-radius:2px;padding:0 1px;">${escapeHtml(line.content)}</mark>`
-                          : highlightLine(line.content, syntaxLang);
+                  const inlineEntry = unifiedInlineMap.get(line);
+                  let highlighted: string;
+                  if (syntaxLang !== "none" && line.type !== "unchanged") {
+                    const syntaxHtml = highlightLine(line.content, syntaxLang);
+                    if (inlineEntry && inlineEntry.ranges.length > 0) {
+                      const markStyle =
+                        line.type === "removed"
+                          ? "background:rgba(255,80,80,0.42);border-radius:2px;padding:0 1px;"
+                          : "background:rgba(0,255,136,0.42);border-radius:2px;padding:0 1px;";
+                      highlighted = insertMarksIntoHtml(syntaxHtml, inlineEntry.ranges, markStyle);
+                    } else {
+                      const markStyle =
+                        line.type === "removed"
+                          ? "background:rgba(255,80,80,0.35);border-radius:2px;padding:0 1px;"
+                          : "background:rgba(0,255,136,0.30);border-radius:2px;padding:0 1px;";
+                      highlighted = `<mark style="${markStyle}">${syntaxHtml}</mark>`;
+                    }
+                  } else if (inlineEntry) {
+                    highlighted = inlineEntry.html;
+                  } else if (line.type === "removed") {
+                    highlighted = `<mark style="background:rgba(255,80,80,0.42);border-radius:2px;padding:0 1px;">${escapeHtml(line.content)}</mark>`;
+                  } else if (line.type === "added") {
+                    highlighted = `<mark style="background:rgba(0,255,136,0.35);border-radius:2px;padding:0 1px;">${escapeHtml(line.content)}</mark>`;
+                  } else {
+                    highlighted = highlightLine(line.content, syntaxLang);
+                  }
                   const bg =
                     line.type === "added"
                       ? "rgba(0,255,136,0.13)"
