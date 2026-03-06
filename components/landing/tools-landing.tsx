@@ -3,6 +3,7 @@ import {
   Binary,
   Braces,
   Clock,
+  Database,
   Fingerprint,
   Key,
   Link2,
@@ -71,6 +72,12 @@ const TOOLS = [
     desc: "Unix timestamp ↔ datetime & timezone",
     href: "/tools/timestamp-converter",
     icon: <Clock size={22} />,
+  },
+  {
+    cmd: "sql-formatter",
+    desc: "Format, beautify & minify SQL queries",
+    href: "/tools/sql-formatter",
+    icon: <Database size={22} />,
   },
 ];
 
@@ -164,7 +171,7 @@ export default function ToolsLanding() {
                 style={{
                   textDecoration: "none",
                   borderRight: i % 3 !== 2 ? "1px solid rgba(0,255,136,0.08)" : "none",
-                  borderBottom: i < 6 ? "1px solid rgba(0,255,136,0.08)" : "none",
+                  borderBottom: i < TOOLS.length - 3 ? "1px solid rgba(0,255,136,0.08)" : "none",
                 }}
               >
                 {/* Hover gradient overlay */}

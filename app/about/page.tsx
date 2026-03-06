@@ -190,6 +190,10 @@ export default function AboutPage() {
                 name: "Timestamp Converter",
                 desc: "Convert Unix timestamps to human-readable dates with timezone support and ISO 8601",
               },
+              {
+                name: "SQL Formatter",
+                desc: "Format, beautify, and minify SQL queries with dialect support for MySQL, PostgreSQL, T-SQL, SQLite, BigQuery, and more",
+              },
             ].map(({ name, desc }) => (
               <div
                 key={name}

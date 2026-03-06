@@ -351,7 +351,7 @@ function computeDiff(
       const pairByAi = new Map(pairs.map((p) => [p.ai, p.ri]));
 
       // Pre-compute inline diffs
-      const inlineCache = new Map<number, { leftHtml: string; rightHtml: string }>();
+      const inlineCache = new Map<number, ReturnType<typeof computeInlineDiff>>();
       for (const { ri, ai } of pairs) {
         inlineCache.set(ri, computeInlineDiff(removedLines[ri], addedLines[ai]));
       }

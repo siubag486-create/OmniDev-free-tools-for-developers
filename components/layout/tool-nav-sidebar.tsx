@@ -14,6 +14,7 @@ const tools = [
   { id: "url-encoder",          label: "url-encoder",          desc: "Encode / Decode"  },
   { id: "yaml-to-json",         label: "yaml-to-json",         desc: "YAML ↔ JSON"      },
   { id: "timestamp-converter",  label: "timestamp-converter",  desc: "Unix ↔ Datetime"  },
+  { id: "sql-formatter",        label: "sql-formatter",        desc: "Format & Minify"  },
 ];
 
 export default function ToolNavSidebar({ currentTool }: { currentTool: string }) {
