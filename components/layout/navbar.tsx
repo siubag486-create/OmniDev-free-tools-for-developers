@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Terminal, Menu, X } from "lucide-react";
+import { Menu, X } from "lucide-react";
 
 const monoFont = "'RoundedFixedsys', var(--font-geist-mono), monospace";
 
@@ -28,18 +28,18 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-6 h-14 flex items-center justify-between">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2 group">
-          <div
-            style={{
-              backgroundColor: "rgba(0, 255, 136, 0.1)",
-              border: "1px solid rgba(0, 255, 136, 0.3)",
-              borderRadius: "6px",
-              padding: "4px 6px",
-              transition: "all 0.2s",
-            }}
-            className="group-hover:bg-[rgba(0,255,136,0.2)]"
+          <svg
+            width="12"
+            height="14"
+            viewBox="0 0 18 22"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            style={{ flexShrink: 0 }}
           >
-            <Terminal size={14} style={{ color: "var(--terminal-green)" }} />
-          </div>
+            <rect x="0" y="0" width="4" height="22" rx="1" fill="#00ff88" />
+            <rect x="7" y="0" width="4" height="22" rx="1" fill="#00ff88" />
+            <rect x="14" y="0" width="4" height="22" rx="1" fill="#00ff88" />
+          </svg>
           <span
             style={{
               fontFamily: "'RoundedFixedsys', var(--font-space-mono), monospace",
